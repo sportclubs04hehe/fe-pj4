@@ -4,7 +4,9 @@
             <form [formGroup]="emailForm" (ngSubmit)="sendEmail()" autocomplete="off">
                 <div class="text-center mb-4">
                     @if(modeMain.includes('resend-email-confirmation-link')) {
-                        <h3 class="mb-3 fw-bold">Điền email của bạn vào đây</h3>
+                        <h5 class="mb-3 fw-bold">Điền email của bạn vào đây</h5>
+                    } @else if(modeMain.includes('forgot-username-or-password')) {
+                        <h5 class="mb-3 fw-bold">Nhập email của bạn để lấy lại mật khẩu</h5>
                     }
                 </div>
 
@@ -28,7 +30,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="d-gird">
-                            <button class="btn btn-block btn-success" type="submit"> Gửi </button>
+                            <button class="btn btn-block btn-success" type="submit" [disabled]="!emailForm.get('email')?.valid"> Gửi </button>
                         </div>
                     </div>
                     <div class="col-6">

@@ -73,6 +73,13 @@ export class SendEmailComponent implements OnInit{
             this.sharedService.showNotification(true, response.value.title, response.value.message);
             this.router.navigate(['account/login']);
           },
+          error: (err) => {
+            if (err.error.errors) {
+              this.errorMessage = err.error.errors;
+            } else {
+              this.errorMessage.push(err.error);
+            }
+          },
         });
       }
     }
