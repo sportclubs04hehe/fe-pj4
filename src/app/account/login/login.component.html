@@ -32,6 +32,11 @@
                 @if(errorMessage.length > 0) {
                     <div class="form-floatin">
                         <app-validation-message [errorMessage]="errorMessage"></app-validation-message>
+                       @if(errorMessage[0].includes('Vui lòng xác nhận email')){
+                        <a class="btn btn-link" (click)="resendEmailConfirmLink()">
+                            Nhấn vào đây để gửi xác nhận lại email
+                        </a>
+                       }
                     </div>
                 }
 

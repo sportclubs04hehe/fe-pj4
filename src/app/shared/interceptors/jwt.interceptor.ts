@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { AccountService } from '../../account/account.service';
 import { inject } from '@angular/core';
-import { User } from '../models/user.model';
+import { User } from '../models/account/user.model';
 import { take } from 'rxjs';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
