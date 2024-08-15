@@ -10,9 +10,9 @@
                     [class.is-invalid]="submitted && registerForm.get('firstName')?.errors" appAutoFocus>
                     <label for="firstName">Tên</label>
                     @if (submitted && registerForm.get('firstName')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Tên không được để trống</span>
+                        <span class="text-danger mt-2 d-block">Tên không được để trống</span>
                     }@else if (submitted && registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maslength')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Tên phải ít nhất 3 ký tự và không quá 15 ký tự</span>
+                        <span class="text-danger mt-2 d-block">Tên phải ít nhất 3 ký tự và không quá 15 ký tự</span>
                     }
                 </div>
 
@@ -21,9 +21,9 @@
                     [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
                     <label for="lastName">Họ</label>
                     @if (submitted && registerForm.get('lastName')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Họ không được để trống</span>
+                        <span class="text-danger mt-2 d-block">Họ không được để trống</span>
                     }@else if (submitted && registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maslength')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Họ phải ít nhất 3 ký tự và không quá 15 ký tự</span>
+                        <span class="text-danger mt-2 d-block">Họ phải ít nhất 3 ký tự và không quá 15 ký tự</span>
                     }
                 </div>
 
@@ -32,9 +32,9 @@
                     [class.is-invalid]="submitted && registerForm.get('email')?.errors">
                     <label for="email">Email</label>
                     @if (submitted && registerForm.get('email')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Email không được để trống</span>
+                        <span class="text-danger mt-2 d-block">Email không được để trống</span>
                     }@else if (submitted && registerForm.get('email')?.hasError('pattern')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Email không hợp lệ</span>
+                        <span class="text-danger mt-2 d-block">Email không hợp lệ</span>
                     }
                 </div>
 
@@ -43,9 +43,9 @@
                     [class.is-invalid]="submitted && registerForm.get('password')?.errors">
                     <label for="password">Mật khẩu</label>
                     @if (submitted && registerForm.get('password')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Mật khẩu không được để trống</span>
+                        <span class="text-danger mt-2 d-block">Mật khẩu không được để trống</span>
                     }@else if (submitted && registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maslength')) {
-                        <span class="text-danger mt-2 d-block fw-bold">Mật khẩu phải ít nhất 6 ký tự và không quá 15 ký tự</span>
+                        <span class="text-danger mt-2 d-block">Mật khẩu phải ít nhất 6 ký tự và không quá 15 ký tự</span>
                     }
                 </div>
 
@@ -56,7 +56,7 @@
                 }
 
                 <div class="d-grid mt-4 px-">
-                    <button class="btn btn-lg btn-info" type="submit" [disabled]="!registerForm.valid"> ĐĂNG KÝ </button>
+                    <button class="btn btn-lg btn-info" type="submit"> ĐĂNG KÝ </button>
                 </div>
             </form>
         </main>

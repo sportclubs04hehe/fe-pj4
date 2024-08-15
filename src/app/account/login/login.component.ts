@@ -4,6 +4,7 @@ import { AccountService } from '../account.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { User } from '../../shared/models/account/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private accountService: AccountService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private toastr: ToastrService,
   ) {
     accountService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
@@ -55,7 +57,7 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm.valid) {
       this.accountService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {
+        next: _ => {
           if(this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
           }
@@ -65,12 +67,14 @@ export class LoginComponent implements OnInit {
         error: (error) => {
           if (error.error.errors) {
             this.errorMessage = error.error.errors;
+            this.toastr.error(error.error.errors);
           } else {
             this.errorMessage.push(error.error);
+            this.toastr.error(error.error);
           }
         },
         complete: () => {
-          console.log('đăng nhập thành công');
+          this.toastr.success('Đăng nhập thành công');
         },
       });
     }

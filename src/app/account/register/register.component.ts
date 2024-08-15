@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SharedService } from '../../shared/shared.service';
 import { User } from '../../shared/models/account/user.model';
 import { take } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent {
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
     private router: Router,
+    private toastr: ToastrService,
   ) {
     accountService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
@@ -55,13 +57,15 @@ export class RegisterComponent {
         error: (error) => {
           if(error.error.errors) {
             this.errorMessage = error.error.errors;
+            this.toastr.error(error.error.errors);
           } 
           else {
             this.errorMessage.push(error.error);
+            this.toastr.error(error.error);
           }
         },
         complete: () => {
-          console.log('đăng ký thành công');
+          this.toastr.success('Đăng ký thành công, hãy xác nhận email trước khi đăng nhập!')
         }
       });
     }

@@ -10,7 +10,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ListComponent } from './list/list.component';
+import { MessageComponent } from './message/message.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,11 +21,16 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
     FooterComponent,
     NavbarComponent,
     PlayComponent,
+    ListComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedModule,
+    BrowserAnimationsModule,
+    BsDropdownModule,
+
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),
