@@ -9,13 +9,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
+import { ServerErrorComponent } from './erors/server-error/server-error.component';
+import { TestErrorComponent } from './erors/test-error/test-error.component';
 
 @NgModule({
   declarations: [
     NotFoundComponent,
     ValidationMessageComponent,
     AutoFocusDirective,
-    NotificationComponent
+    NotificationComponent,
+    ServerErrorComponent,
+    TestErrorComponent
   ],
   imports: [
     CommonModule,

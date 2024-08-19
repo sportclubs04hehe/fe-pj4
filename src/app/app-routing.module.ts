@@ -6,6 +6,8 @@ import { PlayComponent } from './play/play.component';
 import { authorizationGuard } from './shared/guard/authorization.guard';
 import { ListComponent } from './list/list.component';
 import { MessageComponent } from './message/message.component';
+import { TestErrorComponent } from './shared/erors/test-error/test-error.component';
+import { ServerErrorComponent } from './shared/erors/server-error/server-error.component';
 
 const routes: Routes = [
   {
@@ -38,6 +40,14 @@ const routes: Routes = [
   {
     path: 'not-found',
     component: NotFoundComponent,
+  },
+  {
+    path: 'server-error',
+    component: ServerErrorComponent,
+  },
+  {
+    path: 'test-error',
+    component: TestErrorComponent,
   },
   {
     path: '**',
