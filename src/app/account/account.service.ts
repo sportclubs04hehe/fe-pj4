@@ -37,7 +37,6 @@ export class AccountService {
         }
       }),
     );
-
   }
 
   login(model: Login) {
