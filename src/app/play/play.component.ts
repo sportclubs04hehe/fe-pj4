@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play.service';
-import { Observable } from 'rxjs';
+import { AccountService } from '../account/account.service';
 
 @Component({
   selector: 'app-play',
@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 export class PlayComponent implements OnInit {
   message = '';
 
-  constructor(private playService: PlayService) {
+  constructor(private playService: PlayService,
+    private accountService: AccountService
+  ) {
 
   }
 
