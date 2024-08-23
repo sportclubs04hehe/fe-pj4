@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AccountService } from '../account/account.service';
+import { Member } from '../shared/models/user/member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +18,11 @@ export class MemberService {
   }
 
   getMembers() {
-    return this.http.get(`${this.api}/users`, this.getHttpOptions());
+    return this.http.get<Member[]>(`${this.api}/users`);
   }
 
   getMember(username: string) {
-    return this.http.get(`${this.api}/users/get-by-username/${username}`, this.getHttpOptions());
+    return this.http.get<Member>(`${this.api}/users/get-by-username/${username}`);
   }
 
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({  
-        Authorization: `Bearer ${this.accountService.getJWT()}`
-      }),
-    }
-  }
 }

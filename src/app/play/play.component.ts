@@ -10,9 +10,7 @@ import { AccountService } from '../account/account.service';
 export class PlayComponent implements OnInit {
   message = '';
 
-  constructor(private playService: PlayService,
-    private accountService: AccountService
-  ) {
+  constructor(private playService: PlayService ) {
 
   }
 

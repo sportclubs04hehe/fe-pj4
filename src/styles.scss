@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '@angular/cdk/overlay-prebuilt.css';
+
+  .nav-tabs > li.open, .member-tabset > .nav-tabs > li:hover {
+    border-bottom: 4px solid #c2d1e9;
+  }
+  
+  
+  .member-tabset > .nav-tabs > li.active {
+    border-bottom: 4px solid #0866ff;
+    position: relative;
+    font-weight: bold;
+    
+  }
+
+  .member-tabset .nav-link.active {
+    color: #0866ff;
+  }
+
+  
+  .member-tabset > .tab-content {
+    margin-top: -3px;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #eee;
+    padding: 15px 0;
+  }
+  

@@ -15,6 +15,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ListComponent } from './list/list.component';
 import { MessageComponent } from './message/message.component';
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,6 @@ import { errorInterceptor } from './shared/interceptors/error.interceptor';
     SharedModule,
     BrowserAnimationsModule,
     BsDropdownModule,
-
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),

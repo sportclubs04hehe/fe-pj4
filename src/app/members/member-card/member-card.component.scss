@@ -24,10 +24,6 @@
     .card-body {
       background: rgba(255, 255, 255, 0.85);
       transition: background 0.5s ease-in-out, transform 0.5s ease-in-out;
-      
-      h5, p {
-        transition: color 0.3s ease-in-out;
-      }
   
       &:hover {
         background: rgba(255, 255, 255, 1);
@@ -36,6 +32,40 @@
           color: #007bff;
         }
       }
+
+      .member-icons {
+        display: flex;
+        justify-content: center;
+      
+        .btn {
+          padding: 8px;
+          font-size: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          transition: background-color 0.3s ease, transform 0.3s ease;
+      
+          &:hover {
+            transform: translateY(-2px);
+          }
+        }
+      
+        .list-inline-item:nth-child(1) .btn{
+          background-color: #0866ff; /* Màu cho icon 1 */
+        }
+      
+        .list-inline-item:nth-child(2) .btn {
+          background-color: #ff0055; /* Màu cho icon 2 */
+        }
+      
+        .list-inline-item:nth-child(3) .btn {
+          background-color: #1bd835; /* Màu cho icon 3 */
+        }
+      }
+      
     }
   }
   

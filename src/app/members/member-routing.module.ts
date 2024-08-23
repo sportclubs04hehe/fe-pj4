@@ -6,7 +6,7 @@ import { MemberDetailsComponent } from './member-details/member-details.componen
 
 const routes: Routes = [
   { path: 'member-lists', component: MemberListComponent },
-  { path: 'member-detail', component: MemberDetailsComponent },
+  { path: ':username', component: MemberDetailsComponent },
   
 ];
 

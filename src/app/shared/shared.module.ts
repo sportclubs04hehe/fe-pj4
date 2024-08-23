@@ -11,6 +11,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { ServerErrorComponent } from './erors/server-error/server-error.component';
 import { TestErrorComponent } from './erors/test-error/test-error.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { TestErrorComponent } from './erors/test-error/test-error.component';
       timeOut: 3000,
       preventDuplicates: true,
     }),
+    TabsModule.forRoot(),
   ],
   exports: [
     RouterModule,
@@ -39,6 +41,7 @@ import { TestErrorComponent } from './erors/test-error/test-error.component';
     ReactiveFormsModule,
     HttpClientModule,
     ValidationMessageComponent,
+    TabsModule,
   ]
 })
 export class SharedModule { }
