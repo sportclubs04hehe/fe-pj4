@@ -21,13 +21,13 @@ export class LoginComponent implements OnInit {
     private accountService: AccountService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private activeRoute: ActivatedRoute,
+    activeRoute: ActivatedRoute,
     private toastr: ToastrService,
   ) {
     accountService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
         if (user) {
-          this.router.navigate(['/']);
+          this.router.navigate(['/members/member-lists']);
         } else {
           activeRoute.queryParamMap.subscribe({
             next: (params: any) => {
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl(this.returnUrl);
           }
 
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/members/member-lists');
         },
         error: (error) => {
           if (error.error.errors) {

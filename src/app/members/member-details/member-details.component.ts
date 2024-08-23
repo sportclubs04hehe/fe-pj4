@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MemberService } from '../member.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Member } from '../../shared/models/user/member.model';
 import { Gallery, GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { Photo } from '../../shared/models/user/photo.model';
@@ -18,7 +18,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     GalleryModule,
     NgFor, 
     TabsModule, 
-    CommonModule
+    CommonModule,
+    RouterLink,
   ],
   providers:[
     {

@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Login } from '../shared/models/account/login.model';
 import { User } from '../shared/models/account/user.model';
-import { map, of, ReplaySubject } from 'rxjs';
+import { map, of, ReplaySubject, take } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmEmail } from '../shared/models/account/confirm-email.model';
 import { ResetPassword } from '../shared/models/account/reset-password.model';
@@ -19,6 +19,16 @@ export class AccountService {
 
   constructor(private http: HttpClient, private router: Router) {
 
+  }
+
+  getCurrentUser(): User | null {
+    let currentUser: User | null = null;
+
+    this.user$.pipe(take(1)).subscribe(user => {
+      currentUser = user;
+    });
+
+    return currentUser;
   }
 
   refreshUser(jwt: string | null) {

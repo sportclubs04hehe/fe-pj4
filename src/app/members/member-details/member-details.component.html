@@ -8,10 +8,9 @@
             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
               <img [src]="member.photoUrl" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                 style="width: 150px; z-index: 1">
-              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body"
-                data-mdb-ripple-color="dark" style="z-index: 1;">
+              <a class="btn btn-primary" routerLink="/members/edit" style="z-index: 1;">
                 Sửa hồ sơ
-              </button>
+              </a>
             </div>
             <div class="ms-3" style="margin-top: 130px;">
               <h5>{{member.knowAs}} <span style="font-size: 8px; color: rgb(235, 235, 235);"><i>(Hoạt động
@@ -38,14 +37,9 @@
           </div>
           <div class="card-body p-4 text-black">
             <div class="mb-5  text-body">
-              <!-- <p class="lead fw-normal mb-1">Giới thiệu</p>
-                    <div class="p-4 bg-body-tertiary">
-                     
-                     
-                     
-                    </div> -->
 
               <tabset class="member-tabset">
+
                 <tab [heading]="'Giới thiệu của ' + member.knowAs" id="tab1">
                   <div class="mb-1">
                     <p class="pt-3 um"><b>Mô tả về bản thân</b></p>
