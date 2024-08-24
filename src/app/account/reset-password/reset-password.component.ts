@@ -19,11 +19,11 @@ export class ResetPasswordComponent implements OnInit{
   submitted = false;
   errorMessages: string[] = [];
 
-  accountService = inject(AccountService);
-  sharedService = inject(SharedService);
-  formBuilder = inject(FormBuilder);
-  router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
+  private accountService = inject(AccountService);
+  private sharedService = inject(SharedService);
+  private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.accountService.user$.pipe(take(1)).subscribe({

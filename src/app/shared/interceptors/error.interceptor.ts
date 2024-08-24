@@ -41,7 +41,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           default:
-            toastr.error('Lỗi hệ thống', error.status);
+            toastr.error('Đã xảy ra sự cố ngoài ý muốn', error.status);
             break;
         }
       }

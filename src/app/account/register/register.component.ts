@@ -31,6 +31,7 @@ export class RegisterComponent {
       },
     });
   }
+  
   ngOnInit(): void {
     this.initializeForm();
   }
