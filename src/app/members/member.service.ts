@@ -25,4 +25,8 @@ export class MemberService {
     return this.http.get<Member>(`${this.api}/users/get-by-username/${username}`);
   }
 
+  updateMember(member: Member) {
+    return this.http.put(`${this.api}/users`, member);
+  }
+
 }
