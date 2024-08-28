@@ -13,21 +13,13 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.refreshUser();
+    this.initializeUserSession();
   }
 
-  private refreshUser() {
+  private initializeUserSession() {
     const jwt = this.accountService.getJWT();
-
-    if(jwt) {
-      this.accountService.refreshUser(jwt).subscribe({
-        next: _ => {},
-        error: _ => {
-          this.accountService.logout();
-        },
-      });
-    } else {
-      this.accountService.refreshUser(null).subscribe();
+    if (jwt) {
+      this.accountService.refreshUser(jwt).subscribe();
     }
   }
   

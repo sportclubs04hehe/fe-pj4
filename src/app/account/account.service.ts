@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Register } from '../shared/models/account/register.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Login } from '../shared/models/account/login.model';
 import { User } from '../shared/models/account/user.model';
-import { map, of, ReplaySubject, take } from 'rxjs';
+import { BehaviorSubject, catchError, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmEmail } from '../shared/models/account/confirm-email.model';
 import { ResetPassword } from '../shared/models/account/reset-password.model';
@@ -13,32 +13,32 @@ import { ResetPassword } from '../shared/models/account/reset-password.model';
   providedIn: 'root'
 })
 export class AccountService {
-  private userSource = new ReplaySubject<User | null>(1);
+  private userSource = new BehaviorSubject<User | null>(null);
   user$ = this.userSource.asObservable();
   api = environment.appUrl;
 
   constructor(private http: HttpClient, private router: Router) {
+    this.loadStoredUser();
+  }
 
+  private loadStoredUser() {
+    const storedUser = localStorage.getItem(environment.userKey);
+    if (storedUser) {
+      this.userSource.next(JSON.parse(storedUser));
+    }
   }
 
   getCurrentUser(): User | null {
-    let currentUser: User | null = null;
-
-    this.user$.pipe(take(1)).subscribe(user => {
-      currentUser = user;
-    });
-
-    return currentUser;
+    return this.userSource.getValue();
   }
 
   refreshUser(jwt: string | null) {
-    if (jwt === null) {
-      this.userSource.next(null);
-      return of(undefined);
+    if (!jwt) {
+      this.clearUser();
+      return of(null);
     }
 
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', 'Bearer ' + jwt);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${jwt}`);
 
     return this.http.get<User>(`${this.api}/account/refresh-user-token`, { headers }).pipe(
       map((user: User) => {
@@ -46,6 +46,10 @@ export class AccountService {
           this.setUser(user);
         }
       }),
+      catchError(() => {
+        this.clearUser();
+        return of(null);
+      })
     );
   }
 
@@ -55,13 +59,12 @@ export class AccountService {
         if (user) {
           this.setUser(user);
         }
-      }),
+      })
     );
   }
 
   logout() {
-    localStorage.removeItem(environment.userKey);
-    this.userSource.next(null);
+    this.clearUser();
     this.router.navigateByUrl('/');
   }
 
@@ -87,19 +90,18 @@ export class AccountService {
     return this.http.put(`${this.api}/account/reset-password`, model);
   }
 
-  getJWT() {
-    const key = localStorage.getItem(environment.userKey);
-
-    if (key) {
-      const user: User = JSON.parse(key);
-      return user.jwt;
-    }
-
-    return null;
-  }
-
   private setUser(user: User) {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSource.next(user);
+  }
+
+  private clearUser() {
+    localStorage.removeItem(environment.userKey);
+    this.userSource.next(null);
+  }
+
+  getJWT(): string | null {
+    const currentUser = this.getCurrentUser();
+    return currentUser?.jwt || null;
   }
 }

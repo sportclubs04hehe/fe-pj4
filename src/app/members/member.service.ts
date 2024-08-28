@@ -1,7 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AccountService } from '../account/account.service';
+import { HttpClient } from '@angular/common/http';
 import { Member } from '../shared/models/user/member.model';
 
 @Injectable({
@@ -9,16 +8,22 @@ import { Member } from '../shared/models/user/member.model';
 })
 export class MemberService {
   api = environment.appUrl;
-  jwt = '';
-
+   // Signal to hold the members
+   members = signal<Member[]>([]);
   private http = inject(HttpClient);
-  private accountService = inject(AccountService);
   
-  constructor() { 
-  }
-
-  getMembers() {
-    return this.http.get<Member[]>(`${this.api}/users`);
+   // Method to load members if not already loaded
+   loadMembers() {
+    if (this.members().length === 0) {
+      this.http.get<Member[]>(`${this.api}/users`).subscribe({
+        next: (response) => {
+          this.members.set(response);
+        },
+        error: () => {
+          console.error('Failed to load members');
+        }
+      });
+    }
   }
 
   getMember(username: string) {
