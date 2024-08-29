@@ -12,6 +12,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ServerErrorComponent } from './erors/server-error/server-error.component';
 import { TestErrorComponent } from './erors/test-error/test-error.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
       preventDuplicates: true,
     }),
     TabsModule.forRoot(),
+    FileUploadModule,
   ],
   exports: [
     RouterModule,
@@ -42,6 +44,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     HttpClientModule,
     ValidationMessageComponent,
     TabsModule,
+    FileUploadModule,
   ]
 })
 export class SharedModule { }

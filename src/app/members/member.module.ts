@@ -5,7 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MemberRoutingModule } from './member-routing.module';
 import { MemberCardComponent } from './member-card/member-card.component';
 import { MemberEditComponent } from './member-edit/member-edit.component';
-
+import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
 
 
 @NgModule({
@@ -13,6 +13,7 @@ import { MemberEditComponent } from './member-edit/member-edit.component';
     MemberListComponent,
     MemberCardComponent,
     MemberEditComponent,
+    PhotoEditorComponent,
   ],
   imports: [
     CommonModule,

@@ -72,15 +72,13 @@
               <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
             </div>
 
-              <div class="grid">
-                <div class="grid-item" *ngFor="let image of images; let i = index" 
-                     [lightbox]="i" 
-                     [gallery]="galleryId">
-                  <img [src]="image.data?.thumb" alt="Member Photo" class="rounded" />
-                </div>
-              
-            </div>
-            
+            <div class="row g-2">
+              <div class="col mb-2" *ngFor="let image of images; let i = index" [lightbox]="i" [gallery]="galleryId">
+                <img [src]="image.data?.thumb" alt="Member Photo"
+                  class="w-100 rounded-3">
+              </div>
+              </div>
+
           </div>
         </div>
       </div>
