@@ -2,17 +2,18 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Member } from '../shared/models/user/member.model';
+import { of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
   api = environment.appUrl;
-   // Signal to hold the members
+   // signal giữ chân các thành viên
    members = signal<Member[]>([]);
   private http = inject(HttpClient);
   
-   // Method to load members if not already loaded
+   // Phương pháp tải thành viên nếu chưa tải
    loadMembers() {
     if (this.members().length === 0) {
       this.http.get<Member[]>(`${this.api}/users`).subscribe({
@@ -27,11 +28,20 @@ export class MemberService {
   }
 
   getMember(username: string) {
+    const member = this.members().find(x => x.userName === username);
+
+    if(member !== undefined) return of(member); // nếu đã có member trong members
+
     return this.http.get<Member>(`${this.api}/users/get-by-username/${username}`);
   }
 
   updateMember(member: Member) {
-    return this.http.put(`${this.api}/users`, member);
+    return this.http.put(`${this.api}/users`, member).pipe(
+      tap(() => {
+        this.members.update(members => members.map(m => 
+          m.userName === member.userName ? member : m));
+      }),
+    );
   }
 
 }

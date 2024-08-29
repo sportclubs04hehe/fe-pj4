@@ -4,7 +4,6 @@ import { AccountService } from '../../account/account.service';
 import { MemberService } from '../member.service';
 import { User } from '../../shared/models/account/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SharedService } from '../../shared/shared.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -23,8 +22,8 @@ export class MemberEditComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
-    this.loadMember();
     this.initializeForm();
+    this.loadMember();
   }
 
   initializeForm() {
@@ -45,7 +44,9 @@ export class MemberEditComponent implements OnInit {
     this.memberService.getMember(user.userName).subscribe({
       next: (response: Member) => {
         this.member = response;
-        this.editForm.patchValue(this.member);
+        if (this.editForm) {
+          this.editForm.patchValue(this.member); // Patch the form with member data
+        }
       },
     });
   }

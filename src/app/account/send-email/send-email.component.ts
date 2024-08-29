@@ -3,8 +3,6 @@ import { AccountService } from '../account.service';
 import { SharedService } from '../../shared/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
-import { User } from '../../shared/models/account/user.model';
 
 @Component({
   selector: 'app-send-email',
