@@ -12,7 +12,7 @@ import { ResetPassword } from '../../shared/models/account/reset-password.model'
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'
 })
-export class ResetPasswordComponent implements OnInit{
+export class ResetPasswordComponent implements OnInit {
   resetPasswordForm!: FormGroup;
   token!: string;
   email!: string;
@@ -26,32 +26,32 @@ export class ResetPasswordComponent implements OnInit{
   private activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.accountService.user$.pipe(take(1)).subscribe({
-      next: (user: User | null) => {
-        if(user) {
-          this.router.navigateByUrl('/');
-        } else {
-          this.activatedRoute.queryParamMap.subscribe({
-            next: (params: ParamMap) => {
-              this.token = params.get('token') || '';
-              this.email = params.get('email') || '';
 
-              if(this.token && this.email) {
-                this.initializeForm(this.email);
-              } else {
-                this.router.navigateByUrl('/account/login');
-              }
-            },
-          });
-        }
-      },
-    });
+    const user = this.accountService.user$();
+
+    if (user) {
+      this.router.navigate(['/members/member-lists']);
+    } else {
+      this.activatedRoute.queryParamMap.subscribe({
+        next: (params: ParamMap) => {
+          this.token = params.get('token') || '';
+          this.email = params.get('email') || '';
+
+          if (this.token && this.email) {
+            this.initializeForm(this.email);
+          } else {
+            this.router.navigateByUrl('/account/login');
+          }
+        },
+      });
+    }
+
   }
 
   initializeForm(username: string) {
     this.resetPasswordForm = this.formBuilder.group({
-      email: [{value: username, disabled: true}],
-      newPassword: ['',[Validators.required, Validators.maxLength(15), Validators.minLength(6)]]
+      email: [{ value: username, disabled: true }],
+      newPassword: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(6)]]
     });
   }
 
@@ -59,7 +59,7 @@ export class ResetPasswordComponent implements OnInit{
     this.submitted = true;
     this.errorMessages = [];
 
-    if(this.resetPasswordForm.valid && this.email && this.token) {
+    if (this.resetPasswordForm.valid && this.email && this.token) {
       const model: ResetPassword = {
         email: this.email,
         token: this.token,
@@ -72,9 +72,9 @@ export class ResetPasswordComponent implements OnInit{
           this.router.navigateByUrl('/account/login');
         },
         error: (error) => {
-          if(error.error.errors) {
+          if (error.error.errors) {
             this.errorMessages = error.error.errors;
-          } 
+          }
           else {
             this.errorMessages.push(error.error);
           }

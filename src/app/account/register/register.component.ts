@@ -23,13 +23,13 @@ export class RegisterComponent {
     private router: Router,
     private toastr: ToastrService,
   ) {
-    accountService.user$.pipe(take(1)).subscribe({
-      next: (user: User | null) => {
-        if (user) {
-          this.router.navigate(['/']);
-        }
-      },
-    });
+
+    const user = accountService.user$();
+
+    if (user) {
+      this.router.navigate(['/members/member-lists']);
+    }
+
   }
   
   ngOnInit(): void {

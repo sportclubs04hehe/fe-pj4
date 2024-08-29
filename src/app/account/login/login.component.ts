@@ -24,22 +24,22 @@ export class LoginComponent implements OnInit {
     activeRoute: ActivatedRoute,
     private toastr: ToastrService,
   ) {
-    accountService.user$.pipe(take(1)).subscribe({
-      next: (user: User | null) => {
-        if (user) {
-          this.router.navigate(['/members/member-lists']);
-        } else {
-          activeRoute.queryParamMap.subscribe({
-            next: (params: any) => {
-              if (params) {
-                this.returnUrl = params.get('returnUrl');
-              }
-            },
-          });
-        }
-      },
-    });
+
+    const user = this.accountService.user$();
+
+    if(user) {
+      this.router.navigate(['/members/member-lists']);
+    } else {
+      activeRoute.queryParamMap.subscribe({
+        next: (params: any) => {
+          if (params) {
+            this.returnUrl = params.get('returnUrl');
+          }
+        },
+      });
+    }
   }
+
   ngOnInit(): void {
     this.initializeForm();
   }

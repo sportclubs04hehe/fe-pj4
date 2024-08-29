@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Register } from '../shared/models/account/register.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
@@ -13,9 +13,13 @@ import { ResetPassword } from '../shared/models/account/reset-password.model';
   providedIn: 'root'
 })
 export class AccountService {
-  private userSource = new BehaviorSubject<User | null>(null);
-  user$ = this.userSource.asObservable();
-  api = environment.appUrl;
+  private api = environment.appUrl;
+
+  // Signal for storing the current user
+  private userSignal = signal<User | null>(null);
+
+  // Exposed signal for accessing user data reactively
+  user$ = computed(() => this.userSignal());
 
   constructor(private http: HttpClient, private router: Router) {
     this.loadStoredUser();
@@ -24,12 +28,12 @@ export class AccountService {
   private loadStoredUser() {
     const storedUser = localStorage.getItem(environment.userKey);
     if (storedUser) {
-      this.userSource.next(JSON.parse(storedUser));
+      this.userSignal.set(JSON.parse(storedUser));
     }
   }
 
   getCurrentUser(): User | null {
-    return this.userSource.getValue();
+    return this.userSignal();
   }
 
   refreshUser(jwt: string | null) {
@@ -77,13 +81,11 @@ export class AccountService {
   }
 
   resendEmailConfirmLink(email: string) {
-    return this.http.post(`${this.api}/account/resend-email-confirmation-link/${email}`,
-      {});
+    return this.http.post(`${this.api}/account/resend-email-confirmation-link/${email}`, {});
   }
 
   forgotUsernameOrPassword(email: string) {
-    return this.http.post(`${this.api}/account/forgot-username-or-password/${email}`,
-      {});
+    return this.http.post(`${this.api}/account/forgot-username-or-password/${email}`, {});
   }
 
   resetPassword(model: ResetPassword) {
@@ -92,12 +94,12 @@ export class AccountService {
 
   private setUser(user: User) {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
-    this.userSource.next(user);
+    this.userSignal.set(user);
   }
 
   private clearUser() {
     localStorage.removeItem(environment.userKey);
-    this.userSource.next(null);
+    this.userSignal.set(null);
   }
 
   getJWT(): string | null {

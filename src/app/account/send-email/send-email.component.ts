@@ -11,7 +11,7 @@ import { User } from '../../shared/models/account/user.model';
   templateUrl: './send-email.component.html',
   styleUrl: './send-email.component.scss'
 })
-export class SendEmailComponent implements OnInit{
+export class SendEmailComponent implements OnInit {
   emailForm!: FormGroup;
   submitted = false;
   modeMain!: string;
@@ -24,26 +24,23 @@ export class SendEmailComponent implements OnInit{
   activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.accountService.user$.pipe(take(1)).subscribe({
-      next:(user: User | null) => {
-        if (user) {
-          this.router.navigate(['/']);
-        } else {
-          const mode = this.activatedRoute.snapshot.paramMap.get('mode');
-          
-          console.log(mode);
-          if(mode) {
-            this.modeMain = mode;
-            this.initializeForm();
-          }
-        }
-      },
-    });
+    const user = this.accountService.user$();
+
+    if (user) {
+      this.router.navigate(['/']);
+    } else {
+      const mode = this.activatedRoute.snapshot.paramMap.get('mode');
+
+      if (mode) {
+        this.modeMain = mode;
+        this.initializeForm();
+      }
+    }
   }
 
   initializeForm() {
     this.emailForm = this.formBuilder.group({
-      email: ['',[Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]],
+      email: ['', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]],
     });
   }
 
@@ -51,23 +48,23 @@ export class SendEmailComponent implements OnInit{
     this.submitted = true;
     this.errorMessage = [];
 
-    if(this.emailForm.valid && this.modeMain) {
-      if(this.modeMain.includes('resend-email-confirmation-link')) {
+    if (this.emailForm.valid && this.modeMain) {
+      if (this.modeMain.includes('resend-email-confirmation-link')) {
         this.accountService.resendEmailConfirmLink(this.emailForm.get('email')?.value)
-        .subscribe({
-          next: (response: any) => {
-            this.sharedService.showNotification(true, response.value.title, response.value.message);
-            this.router.navigate(['account/login']);
-          },
-          error: (err) => {
-            if (err.error.errors) {
-              this.errorMessage = err.error.errors;
-            } else {
-              this.errorMessage.push(err.error);
-            }
-          },
-        });
-      } else if(this.modeMain.includes('forgot-username-or-password')) {
+          .subscribe({
+            next: (response: any) => {
+              this.sharedService.showNotification(true, response.value.title, response.value.message);
+              this.router.navigate(['account/login']);
+            },
+            error: (err) => {
+              if (err.error.errors) {
+                this.errorMessage = err.error.errors;
+              } else {
+                this.errorMessage.push(err.error);
+              }
+            },
+          });
+      } else if (this.modeMain.includes('forgot-username-or-password')) {
         this.accountService.forgotUsernameOrPassword(this.emailForm.get('email')?.value).subscribe({
           next: (response: any) => {
             this.sharedService.showNotification(true, response.value.title, response.value.message);
@@ -88,5 +85,5 @@ export class SendEmailComponent implements OnInit{
   cancel() {
     this.router.navigate(['account/login']);
   }
-  
+
 }

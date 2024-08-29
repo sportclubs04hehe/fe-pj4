@@ -9,11 +9,9 @@ import { NgIf } from '@angular/common';
 })
 export class NavbarComponent {
 
-  constructor(public accountService: AccountService) {
+  constructor(public accountService: AccountService) {}
 
-  }
-
-  logout(){
+  logout() {
     this.accountService.logout();
   }
 }
