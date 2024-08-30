@@ -4,7 +4,11 @@
         <img [src]="item.url" [alt]="item.url" class="img-thumbnail w-100 mb-1">
 
         <div class="text-center">
-            <button class="btn btn-sm btn-success">Main</button>
+            <button
+            [disabled]="item.isMain"
+            (click)="setMainPhoto(item)"
+            [ngClass]="item.isMain ? 'btn btn-sm btn-success active' : 'btn btn-sm btn-success'"
+            >Main</button>
             <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
         </div>
 

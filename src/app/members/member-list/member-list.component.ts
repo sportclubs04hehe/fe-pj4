@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MemberService } from '../member.service';
+import { AccountService } from '../../account/account.service';
 
 @Component({
   selector: 'app-member-list',
@@ -8,6 +9,7 @@ import { MemberService } from '../member.service';
 })
 export class MemberListComponent implements OnInit{
   memberService = inject(MemberService);
+  accountService = inject(AccountService);
 
   members = this.memberService.members;
 

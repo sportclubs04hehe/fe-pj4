@@ -3,6 +3,8 @@ import { Member } from '../../shared/models/user/member.model';
 import { AccountService } from '../../account/account.service';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment.development';
+import { MemberService } from '../member.service';
+import { Photo } from '../../shared/models/user/photo.model';
 
 @Component({
   selector: 'app-photo-editor',
@@ -11,6 +13,7 @@ import { environment } from '../../../environments/environment.development';
 })
 export class PhotoEditorComponent implements OnInit{
   private accountService = inject(AccountService);
+  private memberService = inject(MemberService);
   member = input.required<Member>();
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
@@ -19,6 +22,30 @@ export class PhotoEditorComponent implements OnInit{
 
   ngOnInit(): void {
     this.initializeUploader();
+  }
+
+  setMainPhoto(photo: Photo) {
+    this.memberService.setMainPhoto(photo.id).subscribe({
+      next: _ => {
+        const user = this.accountService.user$();
+        
+        if(user) {
+          user.photoUrl = photo.url;
+          this.accountService.setUser(user);
+        }
+
+        const updateMember = {...this.member()};
+
+        updateMember.photoUrl = photo.url;
+
+        updateMember.photos.forEach(p => {
+            if(p.isMain) p.isMain = false;
+            if(p.id === photo.id) p.isMain = true;
+        });
+
+        this.memberChange.emit(updateMember);
+      },
+    });
   }
 
   fileOverBase(e: any) {

@@ -32,6 +32,8 @@
 
         <div class="d-flex align-items-center" *ngIf="(accountService.user$()) as user">
           <div class="btn-group" dropdown>
+            <img style="max-height: 50px; border: 2px solid white; display: inline;"
+              [src]="user.photoUrl || './assets/avatar.png'" class="me-2" [alt]="'avatar'">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
               aria-controls="dropdown-basic">
               Xin chào <b><u>{{user.firstName}}</u></b> <span class="caret"></span>

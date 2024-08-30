@@ -28,7 +28,9 @@ export class AccountService {
   private loadStoredUser() {
     const storedUser = localStorage.getItem(environment.userKey);
     if (storedUser) {
-      this.userSignal.set(JSON.parse(storedUser));
+      const user = JSON.parse(storedUser);
+      console.log("Loaded user from storage:", user);
+      this.userSignal.set(user);
     }
   }
 
@@ -92,7 +94,8 @@ export class AccountService {
     return this.http.put(`${this.api}/account/reset-password`, model);
   }
 
-  private setUser(user: User) {
+  setUser(user: User) {
+    console.log("Setting user:", user);
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSignal.set(user);
   }
