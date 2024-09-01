@@ -5,15 +5,18 @@ import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment.development';
 import { MemberService } from '../member.service';
 import { Photo } from '../../shared/models/user/photo.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-photo-editor',
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.scss'
 })
-export class PhotoEditorComponent implements OnInit{
+export class PhotoEditorComponent implements OnInit {
   private accountService = inject(AccountService);
   private memberService = inject(MemberService);
+  private toastr = inject(ToastrService);
+
   member = input.required<Member>();
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
@@ -25,27 +28,43 @@ export class PhotoEditorComponent implements OnInit{
   }
 
   setMainPhoto(photo: Photo) {
-    this.memberService.setMainPhoto(photo.id).subscribe({
+    this.memberService.setMainPhoto(photo).subscribe({
       next: _ => {
         const user = this.accountService.user$();
-        
-        if(user) {
+
+        if (user) {
           user.photoUrl = photo.url;
           this.accountService.setUser(user);
         }
 
-        const updateMember = {...this.member()};
+        const updateMember = { ...this.member() };
 
         updateMember.photoUrl = photo.url;
 
         updateMember.photos.forEach(p => {
-            if(p.isMain) p.isMain = false;
-            if(p.id === photo.id) p.isMain = true;
+          if (p.isMain) p.isMain = false;
+          if (p.id === photo.id) p.isMain = true;
         });
 
         this.memberChange.emit(updateMember);
+
+        this.toastr.success('Đặt ảnh đại diện thành công');
       },
     });
+  }
+
+  deletePhoto(photo: Photo) {
+    this.memberService.deletePhoto(photo).subscribe({
+      next: _ => {
+        const updateMember = { ...this.member() };
+        updateMember.photos = updateMember.photos.filter(x => x.id !== photo.id);
+        this.memberChange.emit(updateMember);
+        this.toastr.success('Xóa ảnh thành công');
+      },
+      complete: () => {
+        console.log('Delete photo successfully!');
+      }
+    })
   }
 
   fileOverBase(e: any) {
@@ -63,15 +82,34 @@ export class PhotoEditorComponent implements OnInit{
       maxFileSize: 10 * 1024 * 1024,
     });
 
+    let totalFiles = 0;
+    let uploadedFiles = 0;
+
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
+      totalFiles++;
     }
 
     this.uploader.onSuccessItem = (item, response, status, header) => {
-       const photo = JSON.parse(response);
-       const updatedMember = {...this.member()};
-       updatedMember.photos.push(photo);
-       this.memberChange.emit(updatedMember);
+      const photo = JSON.parse(response);
+      const updatedMember = { ...this.member() };
+      updatedMember.photos.push(photo);
+      this.memberChange.emit(updatedMember);
+
+      uploadedFiles++;
+
+      // Nếu tất cả các file đều đã tải lên thành công
+      if (uploadedFiles === totalFiles) {
+        if (totalFiles === 1) {
+          this.toastr.success('Thêm ảnh thành công');
+        } else {
+          this.toastr.success('Thêm tất cả ảnh thành công');
+        }
+
+        // Đặt lại sau khi hoàn tất
+        totalFiles = 0;
+        uploadedFiles = 0;
+      }
     }
   }
 }

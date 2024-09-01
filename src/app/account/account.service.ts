@@ -29,7 +29,6 @@ export class AccountService {
     const storedUser = localStorage.getItem(environment.userKey);
     if (storedUser) {
       const user = JSON.parse(storedUser);
-      console.log("Loaded user from storage:", user);
       this.userSignal.set(user);
     }
   }
@@ -71,7 +70,7 @@ export class AccountService {
 
   logout() {
     this.clearUser();
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/account/login');
   }
 
   register(model: Register) {
@@ -95,7 +94,11 @@ export class AccountService {
   }
 
   setUser(user: User) {
-    console.log("Setting user:", user);
+    const currentUser = this.userSignal();
+
+    if (currentUser && user.photoUrl === null) {
+      user.photoUrl = currentUser.photoUrl;
+    }
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSignal.set(user);
   }

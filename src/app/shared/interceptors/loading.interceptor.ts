@@ -11,7 +11,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   sharedService.busy();
 
   return next(req).pipe(
-    delay(1500),
+    delay(500),
     finalize(() => {
       sharedService.idle();
     }),

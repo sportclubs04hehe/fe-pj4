@@ -9,7 +9,7 @@
             (click)="setMainPhoto(item)"
             [ngClass]="item.isMain ? 'btn btn-sm btn-success active' : 'btn btn-sm btn-success'"
             >Main</button>
-            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+            <button [disabled]="item.isMain" (click)="deletePhoto(item)" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
         </div>
 
     </div>
