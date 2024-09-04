@@ -5,49 +5,85 @@
                 <div class="text-center mb-4">
                     <h3 class="mb-3 fw-bold">ĐĂNG KÝ</h3>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="text" formControlName="firstName" id="firstName" class="form-control" 
-                    [class.is-invalid]="submitted && registerForm.get('firstName')?.errors" appAutoFocus>
-                    <label for="firstName">Tên</label>
-                    @if (submitted && registerForm.get('firstName')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block">Tên không được để trống</span>
-                    }@else if (submitted && registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maslength')) {
-                        <span class="text-danger mt-2 d-block">Tên phải ít nhất 3 ký tự và không quá 15 ký tự</span>
-                    }
-                </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" formControlName="lastName" id="lastName" class="form-control"
-                    [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
-                    <label for="lastName">Họ</label>
-                    @if (submitted && registerForm.get('lastName')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block">Họ không được để trống</span>
-                    }@else if (submitted && registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maslength')) {
-                        <span class="text-danger mt-2 d-block">Họ phải ít nhất 3 ký tự và không quá 15 ký tự</span>
-                    }
-                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-text-input
+                            [formControl]="$any(registerForm.controls['firstName'])"
+                            [id]="'firstName'"
+                            [label]="'Tên'"
+                            [submitted]="submitted"
+                            appAutoFocus>
+                        </app-text-input>
+                    </div>
+                    <div class="col-md-6">
+                        <app-text-input
+                            [formControl]="$any(registerForm.controls['lastName'])"
+                            [id]="'lastName'"
+                            [label]="'Họ'"
+                            [submitted]="submitted"
+                            appAutoFocus>
+                        </app-text-input>
+                    </div>
+                </div>        
+                
+                <app-text-input
+                [formControl]="$any(registerForm.controls['knowAs'])"
+                [id]="'knowAs'"
+                [submitted]="submitted"
+                [label]="'Biệt danh (tên hiển thị)'"
+                appAutoFocus
+                >
+                </app-text-input>   
 
-                <div class="form-floating mb-3">
-                    <input type="email" formControlName="email" id="email" class="form-control"
-                    [class.is-invalid]="submitted && registerForm.get('email')?.errors">
-                    <label for="email">Email</label>
-                    @if (submitted && registerForm.get('email')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block">Email không được để trống</span>
-                    }@else if (submitted && registerForm.get('email')?.hasError('pattern')) {
-                        <span class="text-danger mt-2 d-block">Email không hợp lệ</span>
-                    }
-                </div>
+                <app-text-input
+                [formControl]="$any(registerForm.controls['email'])"
+                [id]="'email'"
+                [submitted]="submitted"
+                [label]="'Email'"
+                appAutoFocus
+                >
+                </app-text-input>   
+                
+                <app-date-picker
+                [formControl]="$any(registerForm.controls['dateOfBirth'])"
+                [maxDate]="maxDate"
+                [label]="'Ngày sinh'"
+                [id]="'dateOfBirth'"
+                [submitted]="submitted">
+                </app-date-picker>
 
-                <div class="form-floating mb-3">
-                    <input type="password" formControlName="password" id="password" class="form-control"
-                    [class.is-invalid]="submitted && registerForm.get('password')?.errors">
-                    <label for="password">Mật khẩu</label>
-                    @if (submitted && registerForm.get('password')?.hasError('required')) {
-                        <span class="text-danger mt-2 d-block">Mật khẩu không được để trống</span>
-                    }@else if (submitted && registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maslength')) {
-                        <span class="text-danger mt-2 d-block">Mật khẩu phải ít nhất 6 ký tự và không quá 15 ký tự</span>
-                    }
-                </div>
+                <div class="form-floating mb-3 d-flex align-items-center">
+                    <p class="me-3 mb-0">Giới tính:</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="male" value="male" formControlName="gender">
+                        <label class="form-check-label" for="male">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="female" value="female" formControlName="gender">
+                        <label class="form-check-label" for="female">Nữ</label>
+                    </div>
+                </div>     
+
+                <app-text-input
+                [type]="'password'"
+                [id]="'password'"
+                [submitted]="submitted"
+                [formControl]="$any(registerForm.controls['password'])"
+                [label]="'Mật khẩu'"
+                appAutoFocus
+                >
+                </app-text-input>
+
+                <app-text-input
+                [id]="'confirmPassword'"
+                [type]="'password'"
+                [submitted]="submitted"
+                [formControl]="$any(registerForm.controls['confirmPassword'])"
+                [label]="'Xác nhận mật khẩu'"
+                appAutoFocus
+                >
+                </app-text-input>
 
                 @if(errorMessage.length > 0) {
                     <div class="form-floatin">
@@ -62,3 +98,17 @@
         </main>
     </div>
 </div>
+
+<!-- <p>{{registerForm.value | json}}</p> -->
+
+                <!-- <div class="form-floating mb-3">
+                    <input type="password" formControlName="password" id="password" class="form-control"
+                    [class.is-invalid]="submitted && registerForm.get('password')?.errors
+                    && registerForm.get('password')?.touched">
+                    <label for="password">Mật khẩu</label>
+                    @if (submitted && registerForm.get('password')?.hasError('required')) {
+                        <span class="text-danger mt-2 d-block">Mật khẩu không được để trống</span>
+                    }@else if (submitted && registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maslength')) {
+                        <span class="text-danger mt-2 d-block">Mật khẩu phải ít nhất 6 ký tự và không quá 15 ký tự</span>
+                    }
+                </div> -->

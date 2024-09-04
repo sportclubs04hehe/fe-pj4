@@ -1,5 +1,5 @@
 <div class="card mt-3" style="width: 100%;">
-  <img [src]="member().photoUrl" class="card-img-top" [alt]="member().knowAs">
+  <img [src]="member().photoUrl || './assets/avatar.png'" class="card-img-top" [alt]="member().knowAs">
   <div class="card-body text-center fw-bold">
     <h5 class="card-title"><i class="bi bi-person-fill"></i> {{member().knowAs}}</h5>
     <p class="card-text">{{member().city}}</p>

@@ -13,6 +13,9 @@ import { ServerErrorComponent } from './erors/server-error/server-error.componen
 import { TestErrorComponent } from './erors/test-error/test-error.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FileUploadModule } from 'ng2-file-upload';
+import { TextInputComponent } from './forms/text-input/text-input.component';
+import { DatePickerComponent } from './forms/date-picker/date-picker.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { FileUploadModule } from 'ng2-file-upload';
     AutoFocusDirective,
     NotificationComponent,
     ServerErrorComponent,
-    TestErrorComponent
+    TestErrorComponent,
+    TextInputComponent,
+    DatePickerComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +41,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     }),
     TabsModule.forRoot(),
     FileUploadModule,
+    BsDatepickerModule.forRoot(),
   ],
   exports: [
     RouterModule,
@@ -45,6 +51,9 @@ import { FileUploadModule } from 'ng2-file-upload';
     ValidationMessageComponent,
     TabsModule,
     FileUploadModule,
+    TextInputComponent,
+    BsDatepickerModule,
+    DatePickerComponent,
   ]
 })
 export class SharedModule { }

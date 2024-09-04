@@ -28,8 +28,8 @@ export class ConfirmEmailComponent implements OnInit {
       this.activeRoute.queryParamMap.subscribe({
         next: (params: ParamMap) => {
           const confirmEmail: ConfirmEmail = {
-            email: params.get('email') || '',
             token: params.get('token') || '',
+            email: params.get('email') || '',
           }
 
           this.accountService.confirmEmail(confirmEmail).subscribe({
