@@ -16,6 +16,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { TextInputComponent } from './forms/text-input/text-input.component';
 import { DatePickerComponent } from './forms/date-picker/date-picker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     TabsModule.forRoot(),
     FileUploadModule,
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   exports: [
     RouterModule,
@@ -54,6 +56,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     TextInputComponent,
     BsDatepickerModule,
     DatePickerComponent,
+    PaginationModule,
   ]
 })
 export class SharedModule { }

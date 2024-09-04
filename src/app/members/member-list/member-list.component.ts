@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MemberService } from '../member.service';
 import { AccountService } from '../../account/account.service';
+import { UserParams } from '../../shared/models/account/user-params.model';
 
 @Component({
   selector: 'app-member-list',
@@ -8,12 +9,19 @@ import { AccountService } from '../../account/account.service';
   styleUrl: './member-list.component.scss'
 })
 export class MemberListComponent implements OnInit{
-  memberService = inject(MemberService);
   accountService = inject(AccountService);
-
-  members = this.memberService.members;
+  memberService = inject(MemberService);
+  userParams = new UserParams(this.accountService.getCurrentUser());
 
   ngOnInit(): void {
-    this.memberService.loadMembers();
+    this.memberService.loadMembers(this.userParams);
+  }
+
+  pageChanged(event: any) {
+    if (this.userParams && this.userParams.pageNumber !== event.pageIndex + 1) {
+      this.userParams.pageNumber = event.pageIndex + 1;
+      // this.service.setUsersParams(this.userParams);
+      this.memberService.loadMembers(this.userParams);
+    }
   }
 }
