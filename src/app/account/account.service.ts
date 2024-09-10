@@ -18,7 +18,7 @@ export class AccountService {
   // Signal for storing the current user
   private userSignal = signal<User | null>(null);
 
-  // Exposed signal for accessing user data reactively
+  // Signal để truy cập dữ liệu người phản ứng
   user$ = computed(() => this.userSignal());
 
   constructor(private http: HttpClient, private router: Router) {

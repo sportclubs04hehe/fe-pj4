@@ -1,0 +1,67 @@
+.custom-form {
+  .form-select {
+    height: 50px;
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .form-select.ms-1 {
+    margin-left: 0.75rem;
+  }
+
+  .form-group {
+    position: relative;
+  }
+
+  .custom-input {
+    width: 150px;
+    border: 1px solid #ced4da;
+    height: 50px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  .custom-button2 {
+    height: 50px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 2.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .custom-button {
+    height: 50px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 2.5rem;
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+}

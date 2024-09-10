@@ -1,50 +1,66 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Member } from '../shared/models/user/member.model';
-import { of, tap } from 'rxjs';
 import { Photo } from '../shared/models/user/photo.model';
 import { PaginatedResult } from '../shared/models/user/pagination.model';
 import { UserParams } from '../shared/models/account/user-params.model';
+import { find, of } from 'rxjs';
+import { AccountService } from '../account/account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
   api = environment.appUrl;
+
   private http = inject(HttpClient);
+  private accountService = inject(AccountService);
+  
     // signal giữ chân các thành viên
   paginatedResult = signal<PaginatedResult<Member[]> | null>(null);
+  memberCache = new Map();
+  user = this.accountService.user$();
+  userParams = signal<UserParams>(new UserParams(this.user));
 
-  // Phương pháp tải thành viên nếu chưa tải
-  loadMembers(userParams: UserParams) {
-    if (!this.paginatedResult()) {
-      let params = this.setPaginationHeaders(userParams.pageNumber, userParams.pageSize);
-
-      params = params.append('minAge', userParams.minAge);
-      params = params.append('maxAge', userParams.maxAge);
-      params = params.append('gender', userParams.gender);
-      params = params.append('orderBy', userParams.orderBy);
-
-      this.http.get<Member[]>(`${this.api}/users`, {observe: 'response', params}).subscribe({
-        next: (response) => {
-          this.paginatedResult.set({
-            items: response.body as Member[],
-            pagination: JSON.parse(response.headers.get('Pagination')!),
-          })
-        },
-        error: () => {
-          console.error('Failed to load members');
-        }
-      });
-    }
+  resetUserParams() {
+    this.userParams.set(new UserParams(this.user));
   }
 
+  loadMembers() {
+    console.log('before', this.userParams());
+    
+    const response = this.memberCache.get(Object.values(this.userParams()).join('-')); // lấy body, userParams mới chính là key cần tìm kiếm
+
+    if(response) return this.setPaginatedResponse(response);
+    
+    let params = this.setPaginationHeaders(this.userParams().pageNumber, this.userParams().pageSize);
+    params = params.append('minAge', this.userParams().minAge);
+    params = params.append('maxAge', this.userParams().maxAge);
+    params = params.append('gender', this.userParams().gender);
+    params = params.append('orderBy', this.userParams().orderBy);
+    
+  
+    this.http.get<Member[]>(`${this.api}/users`, {observe: 'response', params}).subscribe({
+      next: (response) => {
+       this.setPaginatedResponse(response);
+       this.memberCache.set(Object.values(this.userParams()).join('-'), response); // key : value
+       
+      },
+      error: () => {
+        console.error('Failed to load members');
+      }
+    });
+  }
+  
+
   getMember(username: string) {
-    // const member = this.members().find(x => x.userName === username);
+    const member: Member = [...this.memberCache.values()]
+    .reduce((arr,elem) => arr.concat(elem.body), [])
+    .find((m: Member) => m.userName === username);
 
-    // if (member !== undefined) return of(member); // nếu đã có member trong members
-
+    if(member) return of(member);
+    
     return this.http.get<Member>(`${this.api}/users/get-by-username/${username}`);
   }
 
@@ -95,4 +111,10 @@ export class MemberService {
     return params;
   }
 
+  private setPaginatedResponse(response: HttpResponse<Member[]>) {
+    this.paginatedResult.set({
+      items: response.body as Member[],
+      pagination: JSON.parse(response.headers.get('Pagination')!),
+    });
+  }
 }

@@ -5,7 +5,7 @@ import { ValidationMessageComponent } from './erors/validation-message/validatio
 import { NotificationComponent } from './modals/notification/notification.component';
 import { AutoFocusDirective } from './auto-focus.directive';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
@@ -17,6 +17,8 @@ import { TextInputComponent } from './forms/text-input/text-input.component';
 import { DatePickerComponent } from './forms/date-picker/date-picker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TimeagoModule } from "ngx-timeago";
 
 @NgModule({
   declarations: [
@@ -43,7 +45,10 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     TabsModule.forRoot(),
     FileUploadModule,
     BsDatepickerModule.forRoot(),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    FormsModule,
+    ButtonsModule.forRoot(),
+    TimeagoModule.forRoot(),
   ],
   exports: [
     RouterModule,
@@ -57,6 +62,9 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     BsDatepickerModule,
     DatePickerComponent,
     PaginationModule,
+    FormsModule,
+    ButtonsModule,
+    TimeagoModule,
   ]
 })
 export class SharedModule { }

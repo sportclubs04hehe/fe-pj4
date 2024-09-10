@@ -7,6 +7,7 @@ import { Photo } from '../../shared/models/user/photo.model';
 import { LIGHTBOX_CONFIG, LightboxConfig, LightboxModule } from 'ng-gallery/lightbox';
 import { CommonModule, NgFor } from '@angular/common';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 
 @Component({
   selector: 'app-member-details',
@@ -20,6 +21,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     TabsModule, 
     CommonModule,
     RouterLink,
+    TimeagoModule,
   ],
   providers:[
     {
@@ -64,6 +66,11 @@ export class MemberDetailsComponent implements OnInit{
     // Load images into gallery
     const galleryRef = this.gallery.ref(this.galleryId);
     galleryRef.load(this.images);
+  }
+
+  capitalize(str: string): string {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
   
 }

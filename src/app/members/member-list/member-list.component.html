@@ -1,6 +1,71 @@
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center custom-form">
+        <!-- Nhóm nút bên trái -->
+        <div class="btn-group mt-4" role="group">
+            <button 
+            type="button" 
+            class="btn btn-info"
+            [ngClass]="{'active': memberService.userParams().orderBy === 'lastActive'}"
+            (click)="loadMember()"
+            btnRadio="lastActive"
+            [(ngModel)]="memberService.userParams().orderBy"
+            >
+            Hoạt động mới nhất
+            </button>
+
+            <button 
+            type="button" 
+            class="btn btn-info"
+            [ngClass]="{'active': memberService.userParams().orderBy === 'created'}"
+            (click)="loadMember()"
+            btnRadio="created"
+            [(ngModel)]="memberService.userParams().orderBy"
+            >
+            Tham gia gần đây
+            </button>
+        </div>
+        
+        <!-- Các ô input và nút tìm kiếm bên phải -->
+        <form #form="ngForm" (ngSubmit)="loadMember()">
+        <div class="d-flex align-items-center">
+                <div class="form-group me-3 mb-0">
+                    <label for="minAge" class="sr-only">Độ tuổi tối thiểu</label>
+                    <input type="number" class="form-control form-control-lg custom-input" name="minAge"
+                        [(ngModel)]="memberService.userParams().minAge" id="minAge">
+                </div>
+                <div class="form-group me-3 mb-0">
+                    <label for="maxAge" class="sr-only">Tối đa</label>
+                    <input type="number" class="form-control form-control-lg custom-input" name="maxAge"
+                        [(ngModel)]="memberService.userParams().maxAge" id="maxAge">
+                </div>
+                <div class="form-group me-3 mb-0">
+                    <label for="minAge" class="sr-only">Giới tính</label>
+                    <select name="gender" id="gender" class="form-select ms-1" [(ngModel)]="memberService.userParams().gender">
+                        @for (item of genderList; track item.value) {
+                        <option [value]="item.value">{{item.display}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="mt-4 me-3">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 custom-button">
+                        <i class="bi bi-search"></i> Tìm kiếm
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-5 custom-button2" (click)="resetFilter()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                    </button>
+                </div>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+
 <div class="row">
     @for (member of memberService.paginatedResult()?.items; track member.id) {
-    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-4 col-sm-6">
+    <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6">
         <app-member-card [member]="member"></app-member-card>
     </div>
     }
@@ -8,18 +73,18 @@
 
 @if (memberService.paginatedResult()?.items) {
 
-    <div class="d-flex justify-content-center mt-5">
-        <pagination 
-        [boundaryLinks]="true" 
-        [totalItems]="memberService.paginatedResult()?.pagination!.totalItems"
-        [itemsPerPage]="memberService.paginatedResult()?.pagination!.itemsPerPage"
-        (pageChanged)="pageChanged($event)"
-        [maxSize]="10"
-        previousText="&lsaquo;" 
-        nextText="&rsaquo;" 
-        firstText="&laquo;" 
-        lastText="&raquo;">
+<div class="d-flex justify-content-center mt-5">
+    <pagination [boundaryLinks]="true" [totalItems]="memberService.paginatedResult()?.pagination!.totalItems"
+        [itemsPerPage]="memberService.paginatedResult()?.pagination!.itemsPerPage" (pageChanged)="pageChanged($event)"
+        [(ngModel)]="memberService.paginatedResult()?.pagination!.currentPage"
+        [maxSize]="10" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
     </pagination>
-    </div>
+</div>
 
 }
+
+
+
+<!-- <div class="text-center mt-3">
+        <div class="fs-2">Kết quả tìm kiếm - {{memberService.paginatedResult()?.pagination?.totalItems}}</div>
+    </div> -->
