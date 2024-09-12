@@ -1,13 +1,14 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { Register } from '../shared/models/account/register.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Login } from '../shared/models/account/login.model';
 import { User } from '../shared/models/account/user.model';
-import { BehaviorSubject, catchError, map, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmEmail } from '../shared/models/account/confirm-email.model';
 import { ResetPassword } from '../shared/models/account/reset-password.model';
+import { LikeService } from '../members/like.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,9 @@ export class AccountService {
   // Signal để truy cập dữ liệu người phản ứng
   user$ = computed(() => this.userSignal());
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient,
+    private router: Router,
+    private likeService: LikeService,) {
     this.loadStoredUser();
   }
 
@@ -101,6 +104,7 @@ export class AccountService {
     }
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSignal.set(user);
+    this.likeService.getLikedIds();
   }
 
   private clearUser() {

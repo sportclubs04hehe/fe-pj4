@@ -1,7 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MemberService } from '../member.service';
-import { AccountService } from '../../account/account.service';
-import { UserParams } from '../../shared/models/account/user-params.model';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 @Component({

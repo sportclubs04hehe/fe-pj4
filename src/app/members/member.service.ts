@@ -7,6 +7,7 @@ import { PaginatedResult } from '../shared/models/user/pagination.model';
 import { UserParams } from '../shared/models/account/user-params.model';
 import { find, of } from 'rxjs';
 import { AccountService } from '../account/account.service';
+import { setPaginateResponse, setPaginationHeaders } from '../shared/pagination-helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,11 @@ export class MemberService {
   }
 
   loadMembers() {
-    console.log('before', this.userParams());
-    
     const response = this.memberCache.get(Object.values(this.userParams()).join('-')); // lấy body, userParams mới chính là key cần tìm kiếm
 
-    if(response) return this.setPaginatedResponse(response);
+    if(response) return setPaginateResponse(response, this.paginatedResult);
     
-    let params = this.setPaginationHeaders(this.userParams().pageNumber, this.userParams().pageSize);
+    let params = setPaginationHeaders(this.userParams().pageNumber, this.userParams().pageSize);
     params = params.append('minAge', this.userParams().minAge);
     params = params.append('maxAge', this.userParams().maxAge);
     params = params.append('gender', this.userParams().gender);
@@ -43,7 +42,7 @@ export class MemberService {
   
     this.http.get<Member[]>(`${this.api}/users`, {observe: 'response', params}).subscribe({
       next: (response) => {
-       this.setPaginatedResponse(response);
+        setPaginateResponse(response, this.paginatedResult);
        this.memberCache.set(Object.values(this.userParams()).join('-'), response); // key : value
        
       },
@@ -100,21 +99,5 @@ export class MemberService {
     );
   }
 
-  private setPaginationHeaders(pageNumber: number, pageSize: number) {
-    let params = new HttpParams();
-
-    if (pageNumber && pageSize) {
-        params = params.append('pageNumber', pageNumber);
-        params = params.append('pageSize', pageSize);
-    }
-
-    return params;
-  }
-
-  private setPaginatedResponse(response: HttpResponse<Member[]>) {
-    this.paginatedResult.set({
-      items: response.body as Member[],
-      pagination: JSON.parse(response.headers.get('Pagination')!),
-    });
-  }
 }
+
