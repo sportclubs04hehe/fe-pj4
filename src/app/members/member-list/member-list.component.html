@@ -71,7 +71,8 @@
     }
 </div>
 
-@if (memberService.paginatedResult()?.items) {
+@if (memberService.paginatedResult()?.items 
+&& memberService.paginatedResult()?.pagination!.totalItems > memberService.userParams().pageSize) {
 
 <div class="d-flex justify-content-center mt-5">
     <pagination [boundaryLinks]="true" [totalItems]="memberService.paginatedResult()?.pagination!.totalItems"

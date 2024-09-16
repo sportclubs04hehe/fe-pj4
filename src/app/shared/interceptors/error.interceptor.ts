@@ -27,7 +27,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             }
             break;
           case 401:
-            toastr.error('Không được phép truy cập vào đường dẫn này', error.status);
+            // toastr.error('Không được phép truy cập vào đường dẫn này', error.status);
             break;
 
           case 404:

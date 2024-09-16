@@ -14,7 +14,7 @@ export const authorizationGuard: CanActivateFn = (route, state) => {
   if (user) {
     return true;
   } else {
-    sharedService.showNotification(false, 'Lỗi ủy quyền', 'Hãy đăng nhập trước khi truy cập vào đường dẫn này');
+    sharedService.showNotification(false, 'Thông báo', 'Hãy đăng nhập trước khi truy cập vào đường dẫn này');
     router.navigate(['account/login'], { queryParams: { returnUrl: state.url } });
     return false;
   }

@@ -7,7 +7,6 @@ import { MemberCardComponent } from './member-card/member-card.component';
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
 
-
 @NgModule({
   declarations: [
     MemberListComponent,

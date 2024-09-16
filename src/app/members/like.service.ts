@@ -16,6 +16,9 @@ export class LikeService {
   likeIds = signal<string[]>([]);
   paginatedResult = signal<PaginatedResult<Member[]> | null>(null);
 
+  likedCount = signal<number>(0);     // Số lượng người bạn thích
+  likedByCount = signal<number>(0);   // Số lượng người thích bạn
+
   constructor() { }
 
   toggleLike(targetId: string) {
@@ -32,6 +35,13 @@ export class LikeService {
     ).subscribe({
       next: response => {
         setPaginateResponse(response, this.paginatedResult);
+
+          // Xử lý số lượng dựa trên predicate
+          if (predicate === 'liked') {
+            this.likedCount.set(response.body?.length || 0);  // Lưu số lượng người bạn thích
+          } else if (predicate === 'likedBy') {
+            this.likedByCount.set(response.body?.length || 0);  // Lưu số lượng người thích bạn
+          }
       }
     });
   }
@@ -42,6 +52,14 @@ export class LikeService {
         this.likeIds.set(ids);
       },
     }); 
+  }
+
+  getLikedCount(userId: string) {
+    return this.http.get<number>(`${this.api}/likes/liked-count/${userId}`);
+  }
+
+  getLikedByCount(userId: string) {
+    return this.http.get<number>(`${this.api}/likes/liked-by-count/${userId}`);
   }
 
 }

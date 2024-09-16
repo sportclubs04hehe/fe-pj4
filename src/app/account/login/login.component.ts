@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
             this.toastr.error(error.error.errors);
           } else {
             this.errorMessage.push(error.error);
-            // this.toastr.error(error.error);
+            this.toastr.error(error.error);
           }
         },
         complete: () => {

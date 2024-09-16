@@ -1,0 +1,55 @@
+<div class="chat-container">
+    <div class="chat-header">
+        <img [src]="chatUserPhotoUrl() || './assets/avatar.png'" class="avatar">
+      <span class="chat-user">{{chatUserName()}}</span>
+      <div class="chat-actions">
+        <!-- <i class="bi bi-gear"></i> -->
+        <!-- <i class="bi bi-x-circle"></i> -->
+         <p style="color: rgb(4, 246, 0); font-weight: bold; padding-top: 15px;">Đang hoạt động</p>
+      </div>
+    </div>
+  
+    <div class="chat-body" #chatBody>
+      
+      @if (messages().length > 0) {
+        <!-- Vòng lặp hiển thị tin nhắn -->
+        @for (item of messages(); track item.id) {
+          <div class="message" [ngClass]="{'received': item.senderUsername === username(), 'sent': item.senderUsername !== username()}">
+            <p>{{item.content}}</p>
+            <span class="message-time">Send {{item.messageSent | timeago}}</span>
+            <!-- <span class="message-time">Đã gửi</span> -->
+            @if(!item.dateRead && item.senderUsername !== username()) {
+              <span class="message-time">Chưa đọc</span>
+            }
+            @if(item.dateRead && item.senderUsername !== username()) {
+              <span class="message-time fw-bold text-white">Đã xem</span>
+            }
+          </div>
+        }
+      } @else {
+        <!-- Hiển thị đoạn văn bản nếu chưa có tin nhắn -->
+        <p class="text-center pt-4 fs-3">Hãy gửi lời chào đến <b>{{chatUserName()}}</b></p>
+      }
+    </div>
+  
+    <form #messageForm="ngForm" (ngSubmit)="sendMessage()">
+      <div class="chat-footer">
+        <!-- <i class="bi bi-emoji-smile"></i> -->
+        <input 
+        type="text"
+        class="chat-input"
+        placeholder="Enter message"
+        [(ngModel)]="messageContent"
+        name="messageContent"
+        required
+        appAutoFocus>
+        <!-- <i class="bi bi-paperclip"></i> -->
+        <button 
+        type="submit"
+        style="border: none; background: white;"
+        [disabled]="!messageForm.valid">
+        <i [ngStyle]="{'color': messageContent ? 'blue' : ''}" class="bi bi-send-fill"></i>
+        </button>
+      </div>
+    </form>
+  </div>

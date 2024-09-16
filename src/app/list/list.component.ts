@@ -10,7 +10,7 @@ import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 })
 export class ListComponent implements OnInit, OnDestroy{
   likeService = inject(LikeService);
-  predicate = 'mutual';
+  predicate = 'liked';
   pageNumber = 1;
   pageSize = 5;
 

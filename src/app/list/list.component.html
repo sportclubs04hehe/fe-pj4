@@ -1,11 +1,6 @@
 <div class="row">
     <div class="col-12 d-flex justify-content-center my-3">
         <div class="btn-group">
-            <a [(ngModel)]="predicate" (click)="loadLike()" btnRadio="mutual" class="btn btn-info"
-                [ngClass]="{'active': predicate === 'mutual'}">
-                Tất cả
-            </a>
-
             <a [(ngModel)]="predicate" (click)="loadLike()" btnRadio="liked" class="btn btn-info"
                 [ngClass]="{'active': predicate === 'liked'}">Người bạn đã thích</a>
 
@@ -25,7 +20,7 @@
             <h3>{{item.knowAs}}</h3>
             <h6>{{item.city + ' - ' + item.country}}</h6>
             <div class="buttons">
-                <button class="primary">
+                <button class="primary" routerLink="/members/{{item.userName}}">
                     Message
                 </button>
             </div>

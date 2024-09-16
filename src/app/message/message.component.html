@@ -1,1 +1,83 @@
-<p>message works!</p>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center my-3">
+      <div class="btn-group">
+         <button class="btn btn-info" 
+                btnRadio="Unread" [(ngModel)]="container" (click)="loadMessages()">
+                Unread
+            </button>
+            <button class="btn btn-info" 
+                btnRadio="Inbox" [(ngModel)]="container" (click)="loadMessages()">
+                Inbox
+            </button>
+            <button class="btn btn-info" 
+                btnRadio="Outbox" [(ngModel)]="container" (click)="loadMessages()">
+                Outbox
+            </button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="chat-list">
+
+    @if (!messageService.paginatedResult()?.items || messageService.paginatedResult()?.items?.length === 0 ) {
+    <p class="text-center pt-4 fs-3">Không có tin nhắn nào</p>
+    }
+    @else{
+    @for (item of messageService.paginatedResult()?.items; track item.id) {
+    <!-- Chat Item -->
+    <div class="chat-item" [routerLink]="getRouter(item)" [queryParams]="{tab: 'Message'}">
+      <div class="avatar">
+        <img
+          [src]="isOutbox ? (item.recipientPhotoUrl || './assets/avatar.png') : (item.senderPhotoUrl || './assets/avatar.png')"
+          alt="">
+        <span class="avatar-status status-online"></span>
+      </div>
+      <div class="chat-info">
+        <div class="d-flex justify-content-between">
+          <span class="name">{{isOutbox ? item.recipientKnowAs : item.senderKnowAs}}</span>
+          <span class="time">{{item.messageSent | timeago}}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+        <span class="last-message">{{item.content}}</span>
+        <div (click)="$event.stopPropagation()">
+          <button class="delete" (click)="deleteMessage(item.id)">Delete</button>
+        </div>
+        </div>
+      </div>
+    </div>
+    }
+    }
+
+  </div>
+
+  @if (messageService.paginatedResult()?.items
+  && messageService.paginatedResult()?.pagination!.totalItems > pageSize) {
+
+  <div class="d-flex justify-content-center mt-5">
+    <pagination [boundaryLinks]="true" [totalItems]="messageService.paginatedResult()?.pagination!.totalItems"
+      [itemsPerPage]="messageService.paginatedResult()?.pagination!.itemsPerPage" (pageChanged)="pageChange($event)"
+      [(ngModel)]="messageService.paginatedResult()?.pagination!.currentPage" [maxSize]="10" previousText="&lsaquo;"
+      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+  </div>
+
+  }
+</div>
+
+<!-- Chat Item -->
+<!-- <div class="chat-item">
+        <div class="avatar">
+          <img src="https://via.placeholder.com/50" alt="Avatar">
+          <span class="avatar-status status-offline"></span>
+        </div>
+        <div class="chat-info">
+          <div class="d-flex justify-content-between">
+            <span class="name">Jane Smith</span>
+            <span class="time">5m ago</span>
+          </div>
+          <span class="last-message">See you tomorrow!</span>
+        </div>
+      </div>
+   -->
