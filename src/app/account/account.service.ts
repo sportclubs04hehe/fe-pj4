@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, Injectable, OnInit, signal } from '@angular/core';
 import { Register } from '../shared/models/account/register.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
@@ -13,7 +13,7 @@ import { LikeService } from '../members/like.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class AccountService implements OnInit{
   private api = environment.appUrl;
 
   // Signal for storing the current user
@@ -22,10 +22,26 @@ export class AccountService {
   // Signal để truy cập dữ liệu người phản ứng
   user$ = computed(() => this.userSignal());
 
+  role = computed(() => {
+    const user = this.getCurrentUser();
+
+    if(user && user.jwt) {
+      const role = JSON.parse(atob(user.jwt.split('.')[2])).role;
+      return Array.isArray(role) ? role : [role];
+    }
+
+    return null;
+  })
+
   constructor(private http: HttpClient,
     private router: Router,
     private likeService: LikeService,) {
     this.loadStoredUser();
+  }
+
+  ngOnInit(): void {
+    console.log(this.getCurrentUser());
+    
   }
 
   private loadStoredUser() {

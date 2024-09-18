@@ -8,6 +8,7 @@ import { ListComponent } from './list/list.component';
 import { MessageComponent } from './message/message.component';
 import { TestErrorComponent } from './shared/erors/test-error/test-error.component';
 import { ServerErrorComponent } from './shared/erors/server-error/server-error.component';
+import { adminGuard } from './shared/guard/admin.guard';
 
 const routes: Routes = [
   {
@@ -28,6 +29,14 @@ const routes: Routes = [
           import('./members/member.module').then(
             (module) => module.MemberModule
           ),
+      },
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import('./admin/admin.module').then(
+            (module) => module.AdminModule
+          ),
+          canActivate: [adminGuard]
       },
       
     ],
