@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './shared/erors/not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
-import { PlayComponent } from './play/play.component';
 import { authorizationGuard } from './shared/guard/authorization.guard';
 import { ListComponent } from './list/list.component';
 import { MessageComponent } from './message/message.component';
@@ -20,7 +19,6 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [authorizationGuard],
     children: [
-      { path: 'play', component: PlayComponent },
       { path: 'list', component: ListComponent },
       { path: 'message', component: MessageComponent },
       {

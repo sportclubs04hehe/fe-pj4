@@ -19,6 +19,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from "ngx-timeago";
+import { HasRoleDirective } from './has-role.directive';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { TimeagoModule } from "ngx-timeago";
     ServerErrorComponent,
     TestErrorComponent,
     TextInputComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    HasRoleDirective
   ],
   imports: [
     CommonModule,
@@ -65,6 +67,8 @@ import { TimeagoModule } from "ngx-timeago";
     FormsModule,
     ButtonsModule,
     TimeagoModule,
+    HasRoleDirective,
+    
   ]
 })
 export class SharedModule { }

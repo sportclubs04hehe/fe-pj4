@@ -4,4 +4,5 @@ export interface User {
     jwt: string;
     gender: string;
     photoUrl: string;
+    roles: string[];
 }

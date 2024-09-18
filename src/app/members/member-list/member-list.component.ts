@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MemberService } from '../member.service';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { AccountService } from '../../account/account.service';
 
 @Component({
   selector: 'app-member-list',
@@ -9,6 +10,7 @@ import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 })
 export class MemberListComponent implements OnInit{
   memberService = inject(MemberService);
+  accountService = inject(AccountService);
 
   genderList = [
     {value: 'male', display: 'Nam'},
@@ -36,4 +38,5 @@ export class MemberListComponent implements OnInit{
       this.loadMember();
     }
   }
+  
 }

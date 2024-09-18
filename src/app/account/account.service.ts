@@ -13,7 +13,7 @@ import { LikeService } from '../members/like.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService implements OnInit{
+export class AccountService implements OnInit {
   private api = environment.appUrl;
 
   // Signal for storing the current user
@@ -23,15 +23,17 @@ export class AccountService implements OnInit{
   user$ = computed(() => this.userSignal());
 
   role = computed(() => {
-    const user = this.getCurrentUser();
+    const user = this.userSignal();
 
-    if(user && user.jwt) {
-      const role = JSON.parse(atob(user.jwt.split('.')[2])).role;
+    if (user && user.jwt) {
+      const base64Url = user.jwt.split('.')[1];
+      const base64 = this.base64UrlToBase64(base64Url);
+      const role = JSON.parse(atob(base64)).role;
       return Array.isArray(role) ? role : [role];
     }
 
-    return null;
-  })
+    return [];
+  });
 
   constructor(private http: HttpClient,
     private router: Router,
@@ -41,7 +43,7 @@ export class AccountService implements OnInit{
 
   ngOnInit(): void {
     console.log(this.getCurrentUser());
-    
+
   }
 
   private loadStoredUser() {
@@ -126,6 +128,11 @@ export class AccountService implements OnInit{
   private clearUser() {
     localStorage.removeItem(environment.userKey);
     this.userSignal.set(null);
+  }
+
+  private base64UrlToBase64(base64Url: string): string {
+    return base64Url.replace(/-/g, '+').replace(/_/g, '/')
+      .padEnd(base64Url.length + (4 - base64Url.length % 4) % 4, '=');
   }
 
   getJWT(): string | null {
