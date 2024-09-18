@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
-    appUrl: '',
+    appUrl: 'api',
+    hubsUrl: 'hubs',
     userKey: 'chatApp'
 };

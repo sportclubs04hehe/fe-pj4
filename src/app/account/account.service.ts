@@ -1,4 +1,4 @@
-import { computed, Injectable, OnInit, signal } from '@angular/core';
+import { computed, inject, Injectable, OnInit, signal } from '@angular/core';
 import { Register } from '../shared/models/account/register.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
@@ -9,12 +9,15 @@ import { Router } from '@angular/router';
 import { ConfirmEmail } from '../shared/models/account/confirm-email.model';
 import { ResetPassword } from '../shared/models/account/reset-password.model';
 import { LikeService } from '../members/like.service';
+import { PresenceService } from '../message/presence.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService implements OnInit {
   private api = environment.appUrl;
+
+  private presenceService = inject(PresenceService);
 
   // Signal for storing the current user
   private userSignal = signal<User | null>(null);
@@ -92,6 +95,7 @@ export class AccountService implements OnInit {
   logout() {
     this.clearUser();
     this.router.navigateByUrl('/account/login');
+    this.presenceService.stopHubConnection();
   }
 
   register(model: Register) {
@@ -123,6 +127,7 @@ export class AccountService implements OnInit {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSignal.set(user);
     this.likeService.getLikedIds();
+    this.presenceService.createHubConnection(user);
   }
 
   private clearUser() {
