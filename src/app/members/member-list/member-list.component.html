@@ -10,18 +10,18 @@
             btnRadio="lastActive"
             [(ngModel)]="memberService.userParams().orderBy"
             >
-            Hoạt động mới nhất
+            Latest Activity
             </button>
 
             <button 
             type="button" 
             class="btn btn-info"
-            [ngClass]="{'active': memberService.userParams().orderBy === 'created'}"
+            [ngClass]="{'active': memberService.userParams().orderBy === 'dateCreated'}"
             (click)="loadMember()"
-            btnRadio="created"
+            btnRadio="dateCreated"
             [(ngModel)]="memberService.userParams().orderBy"
             >
-            Tham gia gần đây
+            Recently joined
             </button>
         </div>
         
@@ -29,17 +29,17 @@
         <form #form="ngForm" (ngSubmit)="loadMember()">
         <div class="d-flex align-items-center">
                 <div class="form-group me-3 mb-0">
-                    <label for="minAge" class="sr-only">Độ tuổi tối thiểu</label>
+                    <label for="minAge" class="sr-only">Minimum age</label>
                     <input type="number" class="form-control form-control-lg custom-input" name="minAge"
                         [(ngModel)]="memberService.userParams().minAge" id="minAge">
                 </div>
                 <div class="form-group me-3 mb-0">
-                    <label for="maxAge" class="sr-only">Tối đa</label>
+                    <label for="maxAge" class="sr-only">Maximum</label>
                     <input type="number" class="form-control form-control-lg custom-input" name="maxAge"
                         [(ngModel)]="memberService.userParams().maxAge" id="maxAge">
                 </div>
                 <div class="form-group me-3 mb-0">
-                    <label for="minAge" class="sr-only">Giới tính</label>
+                    <label for="minAge" class="sr-only">Gender</label>
                     <select name="gender" id="gender" class="form-select ms-1" [(ngModel)]="memberService.userParams().gender">
                         @for (item of genderList; track item.value) {
                         <option [value]="item.value">{{item.display}}</option>
@@ -48,12 +48,12 @@
                 </div>
                 <div class="mt-4 me-3">
                     <button type="submit" class="btn btn-primary btn-lg px-5 custom-button">
-                        <i class="bi bi-search"></i> Tìm kiếm
+                        <i class="bi bi-search"></i> <span style="padding-left: 10px;">Search</span>
                     </button>
                 </div>
                 <div class="mt-4">
                     <button type="submit" class="btn btn-success btn-lg px-5 custom-button2" (click)="resetFilter()">
-                        <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                        <i class="bi bi-arrow-counterclockwise"></i> <span style="padding-left: 10px;">Refresh</span>
                     </button>
                 </div>
         </div>

@@ -7,22 +7,23 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link" routerLink="/test-error" routerLinkActive="active">Test Error</a>
           </li>
-        </ul>
+        </ul> -->
         @if(accountService.user$()) {
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *appHasRole="['ADMIN','MODERATOR','MEMBER']">
+          <!-- *appHasRole="['ADMIN','MODERATOR','MEMBER']" -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" > 
           <li class="nav-item">
             <a class="nav-link" routerLink="/members/member-lists" routerLinkActive="active"
-              [routerLinkActiveOptions]="{exact: true}">Bạn bè</a>
+              [routerLinkActiveOptions]="{exact: true}">Suggest friends</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/list" routerLinkActive="active">Danh sách yêu thích</a>
+            <a class="nav-link" routerLink="/list" routerLinkActive="active">Wishlist</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/message" routerLinkActive="active">Tin nhắn</a>
+            <a class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
           </li>
           <li *appHasRole="['ADMIN','MODERATOR']" class="nav-item">
             <a class="nav-link" routerLink="/admin/administrator" routerLinkActive="active">Administrator</a>
@@ -36,13 +37,13 @@
               [src]="user.photoUrl || './assets/avatar.png'" class="me-2" [alt]="'avatar'">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
               aria-controls="dropdown-basic">
-              Xin chào <b><u>{{user.firstName}}</u></b> <span class="caret"></span>
+              Hi <b><u>{{user.firstName}}</u></b> <span class="caret"></span>
             </button>
             <ul style="cursor: pointer;" id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-end"
               role="menu" aria-labelledby="button-basic">
-              <a class="dropdown-item" routerLink="/members/edit">Sửa hồ sơ</a>
+              <a class="dropdown-item" routerLink="/members/edit">Edit profile</a>
               <li class="divider dropdown-divider"></li>
-              <a class="dropdown-item" (click)="logout()">Đăng xuất</a>
+              <a class="dropdown-item" (click)="logout()">Logout</a>
             </ul>
           </div>
         </div>
@@ -52,13 +53,13 @@
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="btn btn-light mx-2" routerLink="/account/register">
-                Tạo tài khoản
+                create account
               </a>
             </li>
 
             <li class="nav-item">
               <a class="btn btn-primary mx-2" routerLink="/account/login">
-                Đăng nhập
+                login
               </a>
             </li>
 

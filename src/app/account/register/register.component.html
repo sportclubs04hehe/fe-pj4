@@ -3,96 +3,85 @@
         <main class="form-signin">
             <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
                 <div class="text-center mb-4">
-                    <h3 class="mb-3 fw-bold">ĐĂNG KÝ</h3>
+                    <h3 class="mb-3 fw-bold">REGISTER</h3>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <app-text-input
-                            [formControl]="$any(registerForm.controls['firstName'])"
-                            [id]="'firstName'"
-                            [label]="'Tên'"
-                            [submitted]="submitted"
-                            appAutoFocus>
+                        <app-text-input [formControl]="$any(registerForm.controls['firstName'])" [id]="'firstName'"
+                            [label]="'First Name'" [submitted]="submitted" appAutoFocus>
                         </app-text-input>
                     </div>
                     <div class="col-md-6">
-                        <app-text-input
-                            [formControl]="$any(registerForm.controls['lastName'])"
-                            [id]="'lastName'"
-                            [label]="'Họ'"
-                            [submitted]="submitted"
-                            appAutoFocus>
+                        <app-text-input [formControl]="$any(registerForm.controls['lastName'])" [id]="'lastName'"
+                            [label]="'Last Name'" [submitted]="submitted" appAutoFocus>
                         </app-text-input>
                     </div>
-                </div>        
-                
-                <app-text-input
-                [formControl]="$any(registerForm.controls['knowAs'])"
-                [id]="'knowAs'"
-                [submitted]="submitted"
-                [label]="'Biệt danh (tên hiển thị)'"
-                appAutoFocus
-                >
-                </app-text-input>   
+                </div>
 
-                <app-text-input
-                [formControl]="$any(registerForm.controls['email'])"
-                [id]="'email'"
-                [submitted]="submitted"
-                [label]="'Email'"
-                appAutoFocus
-                >
-                </app-text-input>   
-                
-                <app-date-picker
-                [formControl]="$any(registerForm.controls['dateOfBirth'])"
-                [maxDate]="maxDate"
-                [label]="'Ngày sinh'"
-                [id]="'dateOfBirth'"
-                [submitted]="submitted">
+                <app-text-input [formControl]="$any(registerForm.controls['knowAs'])" [id]="'knowAs'"
+                    [submitted]="submitted" [label]="'Nickname'" appAutoFocus>
+                </app-text-input>
+
+                <app-text-input [formControl]="$any(registerForm.controls['email'])" [id]="'email'"
+                    [submitted]="submitted" [label]="'Email'" appAutoFocus>
+                </app-text-input>
+
+                <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" [maxDate]="maxDate"
+                    [label]="'Date of birth'" [id]="'dateOfBirth'" [submitted]="submitted">
                 </app-date-picker>
 
                 <div class="form-floating mb-3 d-flex align-items-center">
-                    <p class="me-3 mb-0">Giới tính:</p>
+                    <p class="me-3 mb-0">Gender:</p>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" id="male" value="male" formControlName="gender">
-                        <label class="form-check-label" for="male">Nam</label>
+                        <label class="form-check-label" for="male">Male</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="female" value="female" formControlName="gender">
-                        <label class="form-check-label" for="female">Nữ</label>
+                        <input class="form-check-input" type="radio" id="female" value="female"
+                            formControlName="gender">
+                        <label class="form-check-label" for="female">Female</label>
                     </div>
-                </div>     
+                </div>
 
-                <app-text-input
-                [type]="'password'"
-                [id]="'password'"
-                [submitted]="submitted"
-                [formControl]="$any(registerForm.controls['password'])"
-                [label]="'Mật khẩu'"
-                appAutoFocus
-                >
+                <!-- <select class="form-select" formControlName="country">
+                    <option selected>Open this select menu</option>
+                    @for (item of listCountry; track item.id) {
+                    <option [value]="item.iso2">{{item.name}}</option>
+                    }
+                </select>
+
+                <select class="form-select" formControlName="state">
+                    <option selected>Open this select menu</option>
+                    @for (item of listState; track item.id) {
+                    <option [value]="item.iso2">{{item.name}}</option>
+                    }
+                </select>
+
+                <select class="form-select" formControlName="city">
+                    <option selected>Open this select menu</option>
+                    @for (item of listCity; track item.id) {
+                    <option [value]="item.id">{{item.name}}</option>
+                    }
+                </select> -->
+
+                <app-text-input [type]="'password'" [id]="'pass'" [submitted]="submitted"
+                    [formControl]="$any(registerForm.controls['pass'])" [label]="'Password'" appAutoFocus>
                 </app-text-input>
 
-                <app-text-input
-                [id]="'confirmPassword'"
-                [type]="'password'"
-                [submitted]="submitted"
-                [formControl]="$any(registerForm.controls['confirmPassword'])"
-                [label]="'Xác nhận mật khẩu'"
-                appAutoFocus
-                >
+                <app-text-input [id]="'confirmPassword'" [type]="'password'" [submitted]="submitted"
+                    [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm password'"
+                    appAutoFocus>
                 </app-text-input>
 
                 @if(errorMessage.length > 0) {
-                    <div class="form-floatin">
-                        <app-validation-message [errorMessage]="errorMessage"></app-validation-message>
-                    </div>
+                <div class="form-floatin">
+                    <app-validation-message [errorMessage]="errorMessage"></app-validation-message>
+                </div>
                 }
 
                 <div class="d-grid mt-4 px-">
-                    <button class="btn btn-lg btn-info" type="submit"> ĐĂNG KÝ </button>
+                    <button class="btn btn-lg btn-info" type="submit"> REGISTER </button>
                 </div>
             </form>
         </main>
@@ -101,7 +90,7 @@
 
 <!-- <p>{{registerForm.value | json}}</p> -->
 
-                <!-- <div class="form-floating mb-3">
+<!-- <div class="form-floating mb-3">
                     <input type="password" formControlName="password" id="password" class="form-control"
                     [class.is-invalid]="submitted && registerForm.get('password')?.errors
                     && registerForm.get('password')?.touched">
@@ -112,3 +101,4 @@
                         <span class="text-danger mt-2 d-block">Mật khẩu phải ít nhất 6 ký tự và không quá 15 ký tự</span>
                     }
                 </div> -->
+                

@@ -4,6 +4,9 @@ import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared/shared.service';
 import { ToastrService } from 'ngx-toastr';
+import { Country } from '../../shared/models/user/country.model';
+import { City } from '../../shared/models/user/city.model';
+import { State } from '../../shared/models/user/state.model';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +18,12 @@ export class RegisterComponent {
   submitted = false;
   errorMessage: string[] = [];
   maxDate = new Date();
+  listCountry!: Country[]
+  countrySelected!: string;
+  listState!: State[]
+  selectedState!: string
+  listCity!: City[]
+
 
   constructor(private accountService: AccountService,
     private formBuilder: FormBuilder,
@@ -34,24 +43,71 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.initializeForm();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+    // this.fetchCountry();
+    // this.onCountrySelected(); 
+    // this.onStateSelected();
   }
 
   initializeForm() {
     this.registerForm = this.formBuilder.group({
-      firstName: ['',[Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
-      lastName: ['',[Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
-      knowAs: ['',[Validators.required]],
+      firstName: ['',[Validators.required, Validators.minLength(2),Validators.maxLength(15)]],
+      lastName: ['',[Validators.required, Validators.minLength(2),Validators.maxLength(15)]],
+      knowAs: ['',[Validators.required, Validators.maxLength(20)]],
       email: ['',[Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]],
       dateOfBirth: ['', Validators.required],
       gender: ['male'],
-      password: ['',[Validators.required, Validators.minLength(6),Validators.maxLength(15)]],
-      confirmPassword: ['',[Validators.required, this.matchValues('password')]],
+      country: [''],
+      state: [''],
+      city: [''],
+      pass: ['',[Validators.required, Validators.minLength(6),Validators.maxLength(15)]],
+      confirmPassword: ['',[Validators.required, this.matchValues('pass')]],
     });
 
-    this.registerForm.controls['password'].valueChanges.subscribe({
+    this.registerForm.controls['pass'].valueChanges.subscribe({
       next: _ => this.registerForm.controls['confirmPassword'].updateValueAndValidity(),
     });
   }
+
+  // private fetchCountry(){
+  //   this.accountService.getCountries().subscribe({
+  //     next: (response: Country[]) => {
+  //       console.log('country', response);
+        
+  //       this.listCountry = response;
+  //     }
+  //   })
+  
+  // }
+
+  // onCountrySelected() {
+  //   this.registerForm.get('country')?.valueChanges.subscribe(countryIso => {
+  //     this.accountService.getStateOfSelectedCountry(countryIso).subscribe({
+  //       next: (response: State[]) => {
+  //         console.log('state', response);
+          
+  //         this.listState = response;
+  //         this.registerForm.get('state')?.reset(); // Reset state and city when country changes
+  //         this.listCity = [];
+  //       }
+  //     });
+  //   });
+  // }
+
+  // onStateSelected() {
+  //   this.registerForm.get('state')?.valueChanges.subscribe(state => {
+  //     const country = this.registerForm.get('country')?.value;
+  //     if (country && state) {
+  //       this.accountService.getCitiesOfSelectedState(country, state).subscribe({
+  //         next: (response: City[]) => {
+  //           console.log('city', response);
+            
+  //           this.listCity = response;
+  //           this.registerForm.get('city')?.reset(); 
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   matchValues(mathTo: string): ValidatorFn {
     return (control: AbstractControl) => {
@@ -62,22 +118,14 @@ export class RegisterComponent {
   register() {
     this.submitted = true;
     this.errorMessage = [];
-    console.log('chay vao day');
-    
 
     const dob = this.getDateOnly(this.registerForm.get('dateOfBirth')?.value);
     this.registerForm.patchValue({dateOfBirth: dob});
-    console.log(dob);
-    console.log('dung o day chang???');
     
     if(this.registerForm.valid) {
-      console.log('co valid khong??');
       this.accountService.register(this.registerForm.value).subscribe({
         next: (response: any) => {
-          console.log(response);
-          console.log('chay vao day 2');
-          
-          this.sharedService.showNotification(true, response.value.title, response.value.message);
+          this.sharedService.showNotification(true, response.title, response.message);
           this.router.navigateByUrl('/account/login');
         },
         error: (error) => {
@@ -91,7 +139,7 @@ export class RegisterComponent {
           }
         },
         complete: () => {
-          this.toastr.success('Đăng ký thành công, hãy xác nhận email trước khi đăng nhập!')
+          // this.toastr.success('Đăng ký thành công, hãy xác nhận email trước khi đăng nhập!')
         }
       });
     }

@@ -4,6 +4,9 @@ export interface Register {
     knowAs: string;
     dateOfBirth: Date;
     gender: string;
+    country: string;
+    state: string;
+    city: string;
     email: string;
-    password: string;
+    pass: string;
 }

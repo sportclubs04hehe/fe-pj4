@@ -59,13 +59,17 @@ export class MemberDetailsComponent implements OnInit{
 
   member!: Member;
 
+  constructor(){
+  }
+
   ngOnInit(): void {
+    
     this.route.data.subscribe({
       next: data => {
         this.member = data['member'];
         this.loadImages(this.member.photos);
       }
-    })
+    });
 
     this.getLiked();
     this.getByLiked();
@@ -74,7 +78,8 @@ export class MemberDetailsComponent implements OnInit{
       next: params => {
         params['tab'] && this.selectTab(params['tab']);
       }
-    })
+    });
+    
   }
 
   loadMember() {
@@ -92,13 +97,13 @@ export class MemberDetailsComponent implements OnInit{
   onTabActivated(data: TabDirective) {
     this.activeTabs = data;
     if(this.activeTabs.heading === 'Message' && this.message.length === 0 && this.member) {
-      this.messageService.getMessageThread(this.member.userName).subscribe({
+      this.messageService.getMessageThread(this.member.email).subscribe({
         next: (response) => {
           if (response.length > 0) {
             const lastMessage = response[response.length - 1];
   
             // Xác định người đang trò chuyện: nếu username là người gửi thì lấy thông tin người nhận, ngược lại lấy thông tin người gửi
-            if (this.member.userName !== lastMessage.senderUsername) {
+            if (this.member.email !== lastMessage.senderUsername) {
               this.chatUserPhotoUrl = lastMessage.recipientPhotoUrl;
               this.chatUserName = lastMessage.recipientKnowAs;
             } else {
@@ -132,16 +137,19 @@ export class MemberDetailsComponent implements OnInit{
     });
   }
 
-  loadImages(photos: Photo[]) {
-    this.images = photos.map(photo => new ImageItem({ src: photo.url, thumb: photo.url }));
-    
-    // Load images into gallery
-    const galleryRef = this.gallery.ref(this.galleryId);
-    galleryRef.load(this.images);
+  loadImages(photos: Photo[] | null | undefined) {
+    if (photos && photos.length > 0) {
+      this.images = photos.map(photo => new ImageItem({ src: photo.url, thumb: photo.url }));
+      
+      const galleryRef = this.gallery.ref(this.galleryId);
+      galleryRef.load(this.images);
+    } else {
+      this.images = []; 
+    }
   }
 
   loadChatUserInfo() {
-    this.memberService.getMember(this.member.userName).subscribe({
+    this.memberService.getMember(this.member.email).subscribe({
       next: (member) => {
         this.chatUserPhotoUrl = member.photoUrl || './assets/avatar.png';  // URL ảnh mặc định nếu không có
         this.chatUserName = member.knowAs;  // Lấy tên người dùng

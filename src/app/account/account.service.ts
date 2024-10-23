@@ -10,19 +10,28 @@ import { ConfirmEmail } from '../shared/models/account/confirm-email.model';
 import { ResetPassword } from '../shared/models/account/reset-password.model';
 import { LikeService } from '../members/like.service';
 import { PresenceService } from '../message/presence.service';
+import { Country } from '../shared/models/user/country.model';
+import { State } from '../shared/models/user/state.model';
+import { City } from '../shared/models/user/city.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService implements OnInit {
   private api = environment.appUrl;
+  // private apiCountry = "https://api.countrystatecity.in/v1/countries";
+
+  // httpOptions = {
+  //   headers: new HttpHeaders({
+  //     'Content-type': 'application/json',
+  //     'X-CSCAPI-KEY': 'MGZMRlZLbkZ0SmNiOGkxQzBlREFLYjBKdlZZU1BnRmlRbGI3N2lvVg=='
+  //   })
+  // };
 
   private presenceService = inject(PresenceService);
 
-  // Signal for storing the current user
   private userSignal = signal<User | null>(null);
 
-  // Signal để truy cập dữ liệu người phản ứng
   user$ = computed(() => this.userSignal());
 
   role = computed(() => {
@@ -45,10 +54,20 @@ export class AccountService implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.getCurrentUser());
 
   }
 
+  getCountries() {
+    return this.http.get<Country[]>(`${this.api}/auth/countries`);
+  }
+
+  getStateOfSelectedCountry(countryIso: string) {
+    return this.http.get<State[]>(`${this.api}/auth/states/${countryIso}`);
+  }
+
+  getCitiesOfSelectedState(countryIso: string, stateIso: string) {
+    return this.http.get<City[]>(`${this.api}/auth/cities/${countryIso}/${stateIso}`);
+  }
   private loadStoredUser() {
     const storedUser = localStorage.getItem(environment.userKey);
     if (storedUser) {
@@ -61,29 +80,33 @@ export class AccountService implements OnInit {
     return this.userSignal();
   }
 
-  refreshUser(jwt: string | null) {
-    if (!jwt) {
-      this.clearUser();
-      return of(null);
-    }
+  // refreshUser(jwt: string | null) {
+  //   if (!jwt) { // Giữ nguyên
+  //     this.clearUser();
+  //     return of(null);
+  //   }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${jwt}`);
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${jwt}`);
 
-    return this.http.get<User>(`${this.api}/account/refresh-user-token`, { headers }).pipe(
-      map((user: User) => {
-        if (user) {
-          this.setUser(user);
-        }
-      }),
-      catchError(() => {
-        this.clearUser();
-        return of(null);
-      })
-    );
-  }
+  //   return this.http.post<AuthenticationResponse>(`${this.api}/auth/refresh-token`, {}, { headers }).pipe(
+  //     map((response: AuthenticationResponse) => {
+  //       if (response && response.jwt) { 
+  //         const updatedUser: User = {
+  //           ...this.getCurrentUser()!, 
+  //           jwt: response.jwt 
+  //         };
+  //         this.setUser(updatedUser);
+  //       }
+  //     }),
+  //     catchError(() => {
+  //       this.clearUser();
+  //       return of(null);
+  //     }),
+  //   );
+  // }
 
   login(model: Login) {
-    return this.http.post<User>(`${this.api}/account/login`, model).pipe(
+    return this.http.post<User>(`${this.api}/auth/authenticate`, model).pipe(
       map((user: User) => {
         if (user) {
           this.setUser(user);
@@ -99,7 +122,7 @@ export class AccountService implements OnInit {
   }
 
   register(model: Register) {
-    return this.http.post(`${this.api}/account/register`, model);
+    return this.http.post(`${this.api}/auth/register`, model);
   }
 
   confirmEmail(model: ConfirmEmail) {

@@ -32,11 +32,11 @@ export class MemberCardComponent implements OnInit{
         
         if(this.hasLiked()) {
           this.likeService.likeIds.update(ids => ids.filter(x => x !== this.member().id)); // bỏ
-          this.toastr.success(`Huỷ yêu thích ${this.member().knowAs} thành công!`);
+          this.toastr.success(`You have successfully unliked ${this.member().knowAs}!`);
         }
         else {
           this.likeService.likeIds.update(ids => [...ids, this.member().id]); // thả
-          this.toastr.success(`Bạn đã thêm ${this.member().knowAs} vào danh sách yêu thích ❤️`);
+          this.toastr.success(`You have added ${this.member().knowAs} to your favorites list ❤️`);
         }
       },
     })

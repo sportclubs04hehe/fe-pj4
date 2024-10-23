@@ -10,9 +10,10 @@
             <div class="ms-3" style="margin-top: 130px;">
               <h5>{{member.knowAs}} 
                 <span class="text-info" style="font-size: 8px;">
-                  <i>(Active <b>{{capitalize(member.lastActive | timeago)}})</b></i>
+                  <i *ngIf="member.lastActive">(Active <b>{{capitalize(member.lastActive | timeago)}})</b></i>
                 </span>
               </h5>
+              <h6>{{member.firstName}} {{member.lastName}}</h6>
               <p *ngIf="member.city || member.country">{{member.city}} - {{member.country}}</p>
             </div>
           
@@ -39,58 +40,67 @@
           
           <div class="card-body p-4 text-black">
             <div class="mb-5  text-body">
+                <ng-container *ngIf="member.isPrivate === false; else privateTemplate">
+                  <tabset class="member-tabset" #memberTabs [justified]="true" customClass="customClass">
 
-              <tabset class="member-tabset" #memberTabs [justified]="true" customClass="customClass">
-
-                <tab [heading]="'Giới thiệu của ' + member.knowAs" (selectTab)="onTabActivated($event)" id="tab1">
-                  @if (member.introduction) {
-                    <div class="mb-1">
-                      <p class="pt-3 um"><b>Mô tả về bản thân</b></p>
-                      <b>{{member.introduction}}</b>
-                    </div>
-                  }
-                  @if(member.lookingFor){
-                    <div class="mb-1" id="tab2">
-                      <p class="pt-3 um"><b>Người muốn tìm kiếm</b></p>
-                      <b>{{member.lookingFor}}</b>
-                    </div>
-                  }
-                  <div class="mb-1" id="tab3">
-                    <p class="pt-3 um"><b>Chi tiết</b></p>
-                    <p class="mb-1">Tuổi: <b>{{member.age}}</b></p>
-                    <p class="mb-1">Ngày tham gia: <b>{{member.dateCreated | date: 'dd/MM/yyyy'}}</b></p>
+                    <tab [heading]="'Introduction of ' + member.knowAs" (selectTab)="onTabActivated($event)" id="tab1">
+                      @if (member.introduction) {
+                        <div class="mb-1">
+                          <p class="pt-3 um"><b>About me</b></p>
+                          <b>{{member.introduction}}</b>
+                        </div>
+                      }
+                      @if(member.lookingFor){
+                        <div class="mb-1" id="tab2">
+                          <p class="pt-3 um"><b>People who want to find</b></p>
+                          <b>{{member.lookingFor}}</b>
+                        </div>
+                      }
+                      <div class="mb-1" id="tab3">
+                        <p class="pt-3 um"><b>Detail</b></p>
+                        <p class="mb-1">Age: <b>{{member.age}}</b></p>
+                        <p class="mb-1">Join Date: <b>{{member.dateCreated | date: 'dd/MM/yyyy'}}</b></p>
+                      </div>
+    
+                      @if (images.length > 0) {
+                        <div class="d-flex justify-content-between align-items-center mb-4 text-body mt-3">
+                          <p class="lead mb-0 fw-bold">Recent photos</p>
+                          <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                        </div>
+                      }
+          
+                      <div class="row g-2">
+                        <div class="col-4 mb-2" *ngFor="let image of images; let i = index" [lightbox]="i" [gallery]="galleryId">
+                          <img [src]="image.data?.thumb" alt="Member Photo"
+                            class="w-100 rounded-3">
+                        </div>
+                      </div>
+                    </tab>
+    
+                    <tab heading="Interest" (selectTab)="onTabActivated($event)">
+                      <p>{{member.interests}}</p>
+                    </tab>
+    
+                    <!-- <tab heading="Message" (selectTab)="onTabActivated($event)">
+                      <app-member-message 
+                      [username]="member.email"
+                       [messages]="message"
+                       [chatUserName]="chatUserName"
+                       [chatUserPhotoUrl]="chatUserPhotoUrl"
+                       (updateMessage)="onUpdateMessage($event)"></app-member-message>
+                    </tab> -->
+    
+                  </tabset>
+                </ng-container>
+                
+                <ng-template #privateTemplate>
+                  <div class="private-account-container text-center">
+                    <i class="bi bi-shield-lock icon-private"></i>
+                    <p class="message-title">This account is private</p>
+                    <p class="message-subtitle">Follow to see their photos and information</p>
                   </div>
-
-                  @if (images.length > 0) {
-                    <div class="d-flex justify-content-between align-items-center mb-4 text-body mt-3">
-                      <p class="lead mb-0 fw-bold">Ảnh gần đây</p>
-                      <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-                    </div>
-                  }
-      
-                  <div class="row g-2">
-                    <div class="col-4 mb-2" *ngFor="let image of images; let i = index" [lightbox]="i" [gallery]="galleryId">
-                      <img [src]="image.data?.thumb" alt="Member Photo"
-                        class="w-100 rounded-3">
-                    </div>
-                  </div>
-                </tab>
-
-                <tab heading="Sở thích" (selectTab)="onTabActivated($event)">
-                  <p>{{member.interests}}</p>
-                </tab>
-
-                <tab heading="Message" (selectTab)="onTabActivated($event)">
-                  <app-member-message 
-                  [username]="member.userName"
-                   [messages]="message"
-                   [chatUserName]="chatUserName"
-                   [chatUserPhotoUrl]="chatUserPhotoUrl"
-                   (updateMessage)="onUpdateMessage($event)"></app-member-message>
-                </tab>
-
-              </tabset>
-
+                </ng-template>
+                
             </div>
           </div>
         </div>

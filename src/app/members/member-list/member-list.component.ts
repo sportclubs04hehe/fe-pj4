@@ -13,8 +13,8 @@ export class MemberListComponent implements OnInit{
   accountService = inject(AccountService);
 
   genderList = [
-    {value: 'male', display: 'Nam'},
-    {value: 'female', display: 'Nữ'},
+    {value: 'male', display: 'Male'},
+    {value: 'female', display: 'Female'},
    ];
 
   ngOnInit(): void {

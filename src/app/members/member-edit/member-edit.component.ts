@@ -33,6 +33,7 @@ export class MemberEditComponent implements OnInit {
       interests: [''],
       city: [''],
       country: [''],
+      isPrivate: [false],
     });
   }
 
@@ -41,7 +42,7 @@ export class MemberEditComponent implements OnInit {
 
     if (!user) return;
 
-    this.memberService.getMember(user.userName).subscribe({
+    this.memberService.getMember(user.email).subscribe({
       next: (response: Member) => {
         this.member = response;
         if (this.editForm) {

@@ -7,6 +7,8 @@ export const memberDetailedResolver: ResolveFn<Member | null> = (route, state) =
   const memberService = inject(MemberService);
   
   const username = route.paramMap.get('username');
+  console.log('vao day khong revose');
+  
   if(!username) return null;
 
   return memberService.getMember(username);

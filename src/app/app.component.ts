@@ -18,8 +18,9 @@ export class AppComponent implements OnInit{
 
   private initializeUserSession() {
     const jwt = this.accountService.getJWT();
+
     if (jwt) {
-      this.accountService.refreshUser(jwt).subscribe();
+      // this.accountService.refreshUser(jwt).subscribe();
     }
   }
   

@@ -7,5 +7,5 @@
     [formControl]="control" class="form-control">
     <label for="dateOfBirth">{{label()}}</label>
     <span *ngIf="control.hasError('required') && (submitted|| control.touched)"
-        class="text-danger mt-2 d-block">{{label()}} không được để trống</span>
+        class="text-danger mt-2 d-block">{{label()}} is required</span>
 </div>

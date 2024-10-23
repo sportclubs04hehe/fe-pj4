@@ -22,13 +22,11 @@ export class LikeService {
   constructor() { }
 
   toggleLike(targetId: string) {
-    return this.http.post(`${this.api}/likes/${targetId}`,{});
+    return this.http.post(`${this.api}/likes/toggle/${targetId}`,{});
   }
 
   getLikes(predicate: string, pageNumber: number, pageSize: number) {
     let params = setPaginationHeaders(pageNumber, pageSize);
-
-    // params = params.append('predicate', predicate);
 
     return this.http.get<Member[]>(`${this.api}/likes?predicate=${predicate}`, 
       {observe: 'response', params}
@@ -47,7 +45,7 @@ export class LikeService {
   }
 
   getLikedIds() {
-    return this.http.get<string[]>(`${this.api}/likes/list`).subscribe({
+    return this.http.get<string[]>(`${this.api}/likes/liked-by-me`).subscribe({
       next: (ids) => {
         this.likeIds.set(ids);
       },

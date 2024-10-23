@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Member } from '../shared/models/user/member.model';
 import { Photo } from '../shared/models/user/photo.model';
 import { PaginatedResult } from '../shared/models/user/pagination.model';
@@ -40,31 +40,31 @@ export class MemberService {
     params = params.append('orderBy', this.userParams().orderBy);
     
   
-    this.http.get<Member[]>(`${this.api}/users`, {observe: 'response', params}).subscribe({
+    this.http.get<Member[]>(`${this.api}/users/get-all`, {observe: 'response', params}).subscribe({
       next: (response) => {
-        setPaginateResponse(response, this.paginatedResult);
-       this.memberCache.set(Object.values(this.userParams()).join('-'), response); // key : value
-       
+      setPaginateResponse(response, this.paginatedResult);
+      this.memberCache.set(Object.values(this.userParams()).join('-'), response); // key : value
+      console.log(this.paginatedResult());
+      
       },
       error: () => {
         console.error('Failed to load members');
       }
     });
   }
-  
 
   getMember(username: string) {
     const member: Member = [...this.memberCache.values()]
     .reduce((arr,elem) => arr.concat(elem.body), [])
-    .find((m: Member) => m.userName === username);
+    .find((m: Member) => m.email === username);
 
     if(member) return of(member);
     
-    return this.http.get<Member>(`${this.api}/users/get-by-username/${username}`);
+    return this.http.get<Member>(`${this.api}/users/${username}`);
   }
 
   updateMember(member: Member) {
-    return this.http.put(`${this.api}/users`, member).pipe(
+    return this.http.put(`${this.api}/users/update-member`, member).pipe(
       // tap(() => {
       //   this.members.update(members => members.map(m =>
       //     m.userName === member.userName ? member : m));
@@ -86,7 +86,8 @@ export class MemberService {
   }
 
   deletePhoto(photo: Photo) {
-    return this.http.delete(`${this.api}/users/delete-photo/${photo.id}`).pipe(
+    return this.http.delete(`${this.api}/users/delete-image/${photo.id}`, { responseType: 'text' });
+    // return this.http.delete(`${this.api}/users/delete-image/${photo.id}`).pipe(
       // tap(() => {
       //   this.members.update(members => members.map(m => {
       //     if(m.photos.includes(photo)) {
@@ -96,7 +97,7 @@ export class MemberService {
       //     return m;
       //   }));
       // }),
-    );
+    // );
   }
 
 }

@@ -3,3 +3,32 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
+
+.private-account-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 40vh; // Center the content vertically and horizontally
+    padding: 20px;
+    font-family: 'Arial', sans-serif; // Replace with a custom font if you like
+    color: #333; // Adjust color to your liking
+  }
+  
+  .icon-private {
+    font-size: 50px; // Increase size of the icon
+    color: #999; // Set icon color
+    margin-bottom: 10px;
+  }
+  
+  .message-title {
+    font-weight: bold;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .message-subtitle {
+    font-size: 16px;
+    color: #666;
+  }
+  

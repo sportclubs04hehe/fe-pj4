@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../account.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
-import { User } from '../../shared/models/account/user.model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -46,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   initializeForm() {
     this.loginForm = this.formBuilder.group({
-      userName: ['', [Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
@@ -65,12 +63,11 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/members/member-lists');
         },
         error: (error) => {
+          console.log('error login',error);
           if (error.error.errors) {
             this.errorMessage = error.error.errors;
-            this.toastr.error(error.error.errors);
           } else {
             this.errorMessage.push(error.error);
-            this.toastr.error(error.error);
           }
         },
         complete: () => {
@@ -83,6 +80,5 @@ export class LoginComponent implements OnInit {
   resendEmailConfirmLink() {
     this.router.navigateByUrl('/account/send-email/resend-email-confirmation-link');
   }
-
 
 }
