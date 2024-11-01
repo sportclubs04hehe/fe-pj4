@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../account.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     activeRoute: ActivatedRoute,
     private toastr: ToastrService,
+    private cdr: ChangeDetectorRef 
   ) {
 
     const user = this.accountService.user$();

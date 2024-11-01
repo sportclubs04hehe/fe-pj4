@@ -7,6 +7,12 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   const user = accountService.user$();
 
+  const shouldBypass = req.url.includes('http://localhost:8080/messages');
+
+   if (shouldBypass) {
+     return next(req);
+   }
+
   if (user) {
     req = req.clone({
       setHeaders: {

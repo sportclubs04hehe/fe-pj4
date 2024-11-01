@@ -56,10 +56,14 @@
         .list-inline-item:nth-child(1) .btn{
           background-color: #0866ff; /* Màu cho icon 1 */
         }
-      
-        .list-inline-item:nth-child(2) .btn {
-          background-color: #ff0055; /* Màu cho icon 2 */
+
+        .list-inline-item:nth-child(2) .btn{
+          background-color: #3e3e3e; /* Màu cho icon 1 */
         }
+      
+        // .list-inline-item:nth-child(3) .btn {
+        //   background-color: #ff0055; /* Màu cho icon 2 */
+        // }
       
         .list-inline-item:nth-child(3) .btn {
           background-color: #1bd835; /* Màu cho icon 3 */
@@ -67,6 +71,10 @@
       }
       
     }
+  }
+
+  .unfriended-icon {
+    color: #d8931b;
   }
 
 

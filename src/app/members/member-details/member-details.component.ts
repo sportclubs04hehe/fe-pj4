@@ -19,10 +19,10 @@ import { MessageService } from '../../message/message.service';
   styleUrl: './member-details.component.scss',
   standalone: true,
   imports: [
-    LightboxModule, 
+    LightboxModule,
     GalleryModule,
-    NgFor, 
-    TabsModule, 
+    NgFor,
+    TabsModule,
     CommonModule,
     RouterLink,
     TimeagoModule,
@@ -34,7 +34,7 @@ import { MessageService } from '../../message/message.service';
       useValue: {
         keyboardShortcuts: false,
         exitAnimationTime: 1000,
-        
+
       } as LightboxConfig
     }
   ]
@@ -63,7 +63,7 @@ export class MemberDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    
+
     this.route.data.subscribe({
       next: data => {
         this.member = data['member'];
@@ -79,7 +79,7 @@ export class MemberDetailsComponent implements OnInit{
         params['tab'] && this.selectTab(params['tab']);
       }
     });
-    
+
   }
 
   loadMember() {
@@ -97,27 +97,27 @@ export class MemberDetailsComponent implements OnInit{
   onTabActivated(data: TabDirective) {
     this.activeTabs = data;
     if(this.activeTabs.heading === 'Message' && this.message.length === 0 && this.member) {
-      this.messageService.getMessageThread(this.member.email).subscribe({
-        next: (response) => {
-          if (response.length > 0) {
-            const lastMessage = response[response.length - 1];
-  
-            // Xác định người đang trò chuyện: nếu username là người gửi thì lấy thông tin người nhận, ngược lại lấy thông tin người gửi
-            if (this.member.email !== lastMessage.senderUsername) {
-              this.chatUserPhotoUrl = lastMessage.recipientPhotoUrl;
-              this.chatUserName = lastMessage.recipientKnowAs;
-            } else {
-              this.chatUserPhotoUrl = lastMessage.senderPhotoUrl;
-              this.chatUserName = lastMessage.senderKnowAs;
-            }
-          }else {
-            // Nếu chưa có tin nhắn, gọi API lấy thông tin người dùng
-            this.loadChatUserInfo();
-          }
-  
-          this.message = response;
-        },
-      });
+      // this.messageService.getMessageThread(this.member.email).subscribe({
+        // next: (response) => {
+        //   if (response.length > 0) {
+        //     const lastMessage = response[response.length - 1];
+        //
+        //     // Xác định người đang trò chuyện: nếu username là người gửi thì lấy thông tin người nhận, ngược lại lấy thông tin người gửi
+        //     // if (this.member.email !== lastMessage.senderUsername) {
+        //     //   this.chatUserPhotoUrl = lastMessage.recipientPhotoUrl;
+        //     //   this.chatUserName = lastMessage.recipientKnowAs;
+        //     // } else {
+        //     //   this.chatUserPhotoUrl = lastMessage.senderPhotoUrl;
+        //     //   this.chatUserName = lastMessage.senderKnowAs;
+        //     // }
+        //   }else {
+        //     // Nếu chưa có tin nhắn, gọi API lấy thông tin người dùng
+        //     this.loadChatUserInfo();
+        //   }
+        //
+        //   this.message = response;
+        // },
+      // });
     }
   }
 
@@ -140,19 +140,19 @@ export class MemberDetailsComponent implements OnInit{
   loadImages(photos: Photo[] | null | undefined) {
     if (photos && photos.length > 0) {
       this.images = photos.map(photo => new ImageItem({ src: photo.url, thumb: photo.url }));
-      
+
       const galleryRef = this.gallery.ref(this.galleryId);
       galleryRef.load(this.images);
     } else {
-      this.images = []; 
+      this.images = [];
     }
   }
 
   loadChatUserInfo() {
     this.memberService.getMember(this.member.email).subscribe({
       next: (member) => {
-        this.chatUserPhotoUrl = member.photoUrl || './assets/avatar.png';  // URL ảnh mặc định nếu không có
-        this.chatUserName = member.knowAs;  // Lấy tên người dùng
+        this.chatUserPhotoUrl = member.photoUrl || './assets/avatar.png';  
+        this.chatUserName = member.knowAs;  
       },
       error: (err) => {
         console.error('Lỗi khi lấy thông tin người dùng:', err);
@@ -175,5 +175,5 @@ export class MemberDetailsComponent implements OnInit{
     if (!str) return str;
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
-  
+
 }

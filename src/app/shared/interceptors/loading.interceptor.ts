@@ -8,6 +8,12 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 
   console.log(`Interceptor kích hoạt cho: ${req.url}`);
 
+  const shouldBypass = req.url.includes('http://localhost:8088/messages') || req.url.includes('friendships/status');
+
+  if (shouldBypass) {
+    return next(req);
+  }
+
   sharedService.busy();
 
   return next(req).pipe(

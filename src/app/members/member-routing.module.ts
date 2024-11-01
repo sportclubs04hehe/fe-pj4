@@ -6,13 +6,13 @@ import { MemberDetailsComponent } from './member-details/member-details.componen
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from '../shared/guard/prevent-unsaved-changes.guard';
 import { memberDetailedResolver } from './member-detailed.resolver';
+import { MessageComponent } from '../message/message.component';
 // import { authGuard } from '../shared/guard/auth.guard';
 
 const routes: Routes = [
   { path: 'edit', component: MemberEditComponent, canDeactivate: [preventUnsavedChangesGuard]},
   { path: 'member-lists', component: MemberListComponent},
   { path: ':username', component: MemberDetailsComponent, resolve: {member: memberDetailedResolver}},
-  
 ];
 
 @NgModule({

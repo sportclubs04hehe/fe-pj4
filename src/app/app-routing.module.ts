@@ -8,6 +8,8 @@ import { MessageComponent } from './message/message.component';
 import { TestErrorComponent } from './shared/erors/test-error/test-error.component';
 import { ServerErrorComponent } from './shared/erors/server-error/server-error.component';
 import { adminGuard } from './shared/guard/admin.guard';
+import { FriendshipComponent } from './friendships/friendship/friendship.component';
+import { ListFriendsComponent } from './friendships/list-friends/list-friends.component';
 
 const routes: Routes = [
   {
@@ -20,6 +22,8 @@ const routes: Routes = [
     canActivate: [authorizationGuard],
     children: [
       { path: 'list', component: ListComponent },
+      { path: 'friendships', component: FriendshipComponent },
+      { path: 'list-friendships', component: ListFriendsComponent },
       { path: 'message', component: MessageComponent },
       {
         path: 'members',

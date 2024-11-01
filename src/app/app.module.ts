@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './home/home.component';
-import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -16,15 +15,18 @@ import { MessageComponent } from './message/message.component';
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { loadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FriendshipComponent } from './friendships/friendship/friendship.component';
+import { ListFriendsComponent } from './friendships/list-friends/list-friends.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    FooterComponent,
     NavbarComponent,
     ListComponent,
     MessageComponent,
+    FriendshipComponent,
+    ListFriendsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,8 @@
-export interface User {
-    id: string;
+export interface AuthenticationResponse {
     email: string;
-    knowAs: string;
     firstName: string;
-    jwt: string;
     gender: string;
     photoUrl: string;
+    jwt: string;
     refresh_token: string;
-    roles: string[];
 }

@@ -1,39 +1,60 @@
 <div class="card mt-3" style="width: 100%;">
   <img [src]="member().photoUrl || './assets/avatar.png'" class="card-img-top" [alt]="member().knowAs">
   <div class="card-body text-center fw-bold">
-      <h5 class="card-title d-flex align-items-center justify-content-center">
-        <!-- <i class="bi bi-dot" style="font-size: 3rem;"></i> -->
-        <span >{{member().knowAs}}</span>
-        </h5>
-    <p class="card-text d-flex align-items-center justify-content-center"
-    (mouseenter)="isHover = true"
-    (mouseleave)="isHover = false">
-    <ng-container *ngIf="hasLiked()">
-      <i *ngIf="!isHover" 
-      class="bi bi-heart-fill" 
-      style="font-size: 1.5rem; color: #ff0318;">
-      </i>
-      
-      <button style="border: none; background: white;" (click)="toggleLike()" *ngIf="isHover">
-        <i  
-        class="bi bi-x-lg" 
-        style="font-size: 1.5rem; color: #ff0318;">
+    <h5 class="card-title d-flex align-items-center justify-content-center">
+      <!-- <i class="bi bi-dot" style="font-size: 3rem;"></i> -->
+      <span>{{member().knowAs}}</span>
+    </h5>
+    <p class="card-text d-flex align-items-center justify-content-center" (mouseenter)="isHover = true"
+      (mouseleave)="isHover = false">
+      <ng-container *ngIf="hasLiked()">
+        <i *ngIf="!isHover" class="bi bi-heart-fill" style="font-size: 1.5rem; color: #ff0318;">
         </i>
-      </button>
-    </ng-container>
+
+        <button style="border: none; background: white;" (click)="toggleLike()" *ngIf="isHover">
+          <i class="bi bi-x-lg" style="font-size: 1.5rem; color: #ff0318;">
+          </i>
+        </button>
+      </ng-container>
       <span class="ms-2">{{member().city}} - {{member().country}}</span>
     </p>
     <ul class="list-inline member-icons animate text-center">
       <li class="list-inline-item">
-        <button class="btn btn-primary" routerLink="/members/{{member().email}}"><i class="bi bi-person-fill"></i></button>
+        <button class="btn btn-primary" routerLink="/members/{{member().email}}"><i
+            class="bi bi-person-fill"></i></button>
       </li>
-      @if (!hasLiked()) {
-        <li class="list-inline-item">
-          <button class="btn btn-primary" (click)="toggleLike()"><i class="bi bi-heart-fill"></i></button>
-        </li>
-      }
+
       <li class="list-inline-item">
+        <button class="btn"
+          [ngStyle]="{
+            'background-color': friendshipStatus() === 'PENDING' ? 'orange' :
+                                (friendshipStatus() === 'UNFRIENDED' || friendshipStatus() === 'REJECTED') ? 'rgb(64, 64, 64)' :
+                                (friendshipStatus() === 'ACCEPTED' ? 'green' : 'default')
+          }"
+          (click)="toggleFriendRequest()">
+          
+          <span *ngIf="friendshipStatus() === 'PENDING'">
+            <i class="bi bi-person-dash-fill" style="color: white;"></i>
+          </span>
+          <span *ngIf="friendshipStatus() === 'UNFRIENDED' || friendshipStatus() === 'REJECTED'">
+            <i class="bi bi-person-fill-add" style="color: white;"></i>
+          </span>
+          <span *ngIf="friendshipStatus() === 'ACCEPTED'">
+            <i class="bi bi-person-check-fill" style="color: white;"></i>
+          </span>
+        </button>
+      </li>              
+
+      <!-- @if (!hasLiked()) {
+      <li class="list-inline-item">
+        <button class="btn btn-primary" (click)="toggleLike()"><i class="bi bi-heart-fill"></i></button>
+      </li>
+      } -->
+      <!-- <li class="list-inline-item">
         <button class="btn btn-primary" routerLink="/members/{{member().email}}" [queryParams]="{tab: 'Message'}" ><i class="bi bi-envelope-fill"></i></button>
+      </li> -->
+      <li class="list-inline-item">
+        <button class="btn btn-primary" (click)="navigateToMessage()"><i class="bi bi-envelope-fill"></i></button>
       </li>
     </ul>
   </div>

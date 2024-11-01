@@ -19,11 +19,17 @@
             <a class="nav-link" routerLink="/members/member-lists" routerLinkActive="active"
               [routerLinkActiveOptions]="{exact: true}">Suggest friends</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" routerLink="/list" routerLinkActive="active">Wishlist</a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/list-friendships" routerLinkActive="active">Friends</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/friendships" routerLinkActive="active">Friend status</a>
           </li>
           <li *appHasRole="['ADMIN','MODERATOR']" class="nav-item">
             <a class="nav-link" routerLink="/admin/administrator" routerLinkActive="active">Administrator</a>

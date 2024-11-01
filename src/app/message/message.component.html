@@ -1,84 +1,74 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center my-3">
-      <div class="btn-group">
-         <button class="btn btn-info"
-                btnRadio="Unread" [(ngModel)]="container" (click)="loadMessages()">
-                Unread
-            </button>
-            <button class="btn btn-info"
-                btnRadio="Inbox" [(ngModel)]="container" (click)="loadMessages()">
-                Inbox
-            </button>
-            <button class="btn btn-info"
-                btnRadio="Outbox" [(ngModel)]="container" (click)="loadMessages()">
-                Outbox
-            </button>
+<div class="chatroom-container mt-5">
+  <!-- Chat list sidebar -->
+  <div class="friends-list">
+    <div class="friends-header">Chats</div>
+    <ng-container *ngIf="privateChats$ | async as privateChats">
+      <div *ngFor="let user of privateChats.keys()" 
+      class="friend-item"
+      (click)="handleReceiverName(user)"
+      [class.active]="recipient === user">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfaAsw6_kMWP1mx6oie7Jje_S9oKAlqivxgA&s" 
+             [alt]="user" 
+             class="friend-avatar">
+        <span class="friend-name">{{ user }}</span>
+        
+        <ng-container *ngIf="newMessagesMap$ | async as newMessagesMap">
+          <span *ngIf="newMessagesMap.get(user)" class="friend-status new-message"></span>
+        </ng-container>
       </div>
+    </ng-container>
+  </div>
+
+  <!-- Chat window -->
+  <div class="chat-window">
+    <div class="chat-header">
+      <span *ngIf="recipient">Chat with {{ recipient }}</span>
     </div>
-  </div>
 
-  <div>j cx co</div>
-
-  <div class="chat-list">
-
-    @if (!messageService.paginatedResult()?.items || messageService.paginatedResult()?.items?.length === 0 ) {
-    <p class="text-center pt-4 fs-3">Không có tin nhắn nào</p>
-    }
-    @else{
-    @for (item of messageService.paginatedResult()?.items; track item.id) {
-    <!-- Chat Item -->
-    <div class="chat-item" [routerLink]="getRouter(item)" [queryParams]="{tab: 'Message'}">
-      <div class="avatar">
-        <img
-          [src]="isOutbox ? (item.recipientPhotoUrl || './assets/avatar.png') : (item.senderPhotoUrl || './assets/avatar.png')"
-          alt="">
-        <span class="avatar-status status-online"></span>
-      </div>
-      <div class="chat-info">
-        <div class="d-flex justify-content-between">
-          <span class="name">{{isOutbox ? item.recipientKnowAs : item.senderKnowAs}}</span>
-          <span class="time">{{item.messageSent | timeago}}</span>
-        </div>
-        <div class="d-flex justify-content-between">
-        <span class="last-message">{{item.content}}</span>
-        <div (click)="$event.stopPropagation()">
-          <button class="delete" (click)="deleteMessage(item.id)">Delete</button>
-        </div>
-        </div>
-      </div>
-    </div>
-    }
-  }
-
-  </div>
-
-  @if (messageService.paginatedResult()?.items
-  && messageService.paginatedResult()?.pagination!.totalItems > pageSize) {
-
-  <div class="d-flex justify-content-center mt-5">
-    <pagination [boundaryLinks]="true" [totalItems]="messageService.paginatedResult()?.pagination!.totalItems"
-      [itemsPerPage]="messageService.paginatedResult()?.pagination!.itemsPerPage" (pageChanged)="pageChange($event)"
-      [(ngModel)]="messageService.paginatedResult()?.pagination!.currentPage" [maxSize]="10" previousText="&lsaquo;"
-      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
-    </pagination>
-  </div>
-
-  }
-</div>
-
-<!-- Chat Item -->
-<!-- <div class="chat-item">
-        <div class="avatar">
-          <img src="https://via.placeholder.com/50" alt="Avatar">
-          <span class="avatar-status status-offline"></span>
-        </div>
-        <div class="chat-info">
-          <div class="d-flex justify-content-between">
-            <span class="name">Jane Smith</span>
-            <span class="time">5m ago</span>
+    <div class="chat-messages">
+      <ng-container *ngIf="privateChats$ | async as privateChats">
+        <div *ngFor="let chat of privateChats.get(recipient)" 
+             class="message"
+             [class.sent]="chat.senderName === userService.getUserData().username"
+             [class.received]="chat.senderName !== userService.getUserData().username"
+             [class.editing]="isEditing && editingMessageId === chat.id">
+          
+          <!-- Update the message content section -->
+          <div class="message-content">
+            {{ extractNewMessage(chat.message) }}
+            <span *ngIf="chat.edited" class="edited-indicator">edited</span>
           </div>
-          <span class="last-message">See you tomorrow!</span>
+          
+          <!-- Message options only for sent messages -->
+          <div *ngIf="chat.senderName === userService.getUserData().username" 
+               class="message-options"
+               (click)="toggleOptionsMenu(chat.id, $event)">
+            <i class="fas fa-ellipsis-v"></i>
+            <div class="message-options-menu" [class.show]="showOptionsMenu === chat.id">
+              <button (click)="startEditMessage(chat.id, extractNewMessage(chat.message))">Edit</button>
+              <button (click)="deleteMessage(chat.id)">Delete</button>
+            </div>
+          </div>
+
+          <!-- Edit input -->
+          <input *ngIf="isEditing && editingMessageId === chat.id"
+                 type="text" 
+                 class="edit-input" 
+                 [(ngModel)]="editingMessageContent"
+                 (keyup.enter)="saveEditedMessage()">
         </div>
-      </div>
-   -->
+      </ng-container>
+    </div>
+
+    <!-- Input area -->
+    <div class="chat-input">
+      <input type="text" 
+             [(ngModel)]="message" 
+             (keyup.enter)="sendPrivateValue()"
+             placeholder="Type a message...">
+      <button (click)="sendPrivateValue()">
+        <i class="bi bi-send"></i>
+      </button>
+    </div>
+  </div>
+</div>

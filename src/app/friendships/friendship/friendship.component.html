@@ -1,0 +1,68 @@
+<ul class="nav nav-pills nav-fill gap-2 p-1 small rounded-5 shadow-sm" id="pillNav2" role="tablist"
+    style="--bs-nav-link-color: var(--bs-white); --bs-nav-pills-link-active-color: var(--bs-primary); --bs-nav-pills-link-active-bg: var(--bs-white); background: #03BFCB;">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link rounded-5" [ngClass]="{'active': selectedTab === 'requests'}"
+            (click)="selectTab('requests')" type="button" role="tab" [attr.aria-selected]="selectedTab === 'requests'">
+            Friend Request
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link rounded-5" [ngClass]="{'active': selectedTab === 'invitations'}"
+            (click)="selectTab('invitations')" type="button" role="tab" [attr.aria-selected]="selectedTab === 'invitations'">
+            Invitation Sent
+        </button>
+    </li>
+</ul>
+
+<div class="row mt-3">
+    <!-- Yêu cầu kết bạn -->
+    <div *ngIf="selectedTab === 'requests'" class="col-12">
+        <div class="row">   
+            <div class="col-3" *ngFor="let request of friendRequests">
+                <div class="card-container">
+                    <span class="pro">
+                        <a routerLink="/members/{{request.otherUserEmail}}">
+                            <i class="bi bi-person-fill" style="font-size: 2rem; color: #ffffff;"></i>
+                        </a>
+                    </span>
+                    <img class="round" [src]="request.otherUserPhotoUrl || './assets/avatar.png'"
+                        [alt]="request.otherUserKnowAs" />
+                    <h3>{{request.otherUserKnowAs}}</h3>
+                    <h6>Ha Noi - Viet Nam</h6>
+                    <div class="buttons">
+                        <button class="primary mx-3" (click)="cancelInvitation(request.userId)" 
+                            style="background-color: red; color: white;">
+                            Reject
+                        </button>
+                        <button class="primary mx-3" (click)="acceptFriendRequest(request.userId)"  
+                            style="background-color: #03cb0d; color: white;">
+                            Accept
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lời mời đã gửi -->
+    <div *ngIf="selectedTab === 'invitations'" class="col-12">
+        <div class="row">
+            <div class="col-3" *ngFor="let invitation of invitationsSent">
+                <div class="card-container">
+                    <span class="pro">
+                        <i class="bi bi-person-fill-up" style="font-size: 2rem; color: #ffc107;"></i>
+                    </span>
+                    <img class="round" [src]="invitation.otherUserPhotoUrl || './assets/avatar.png'"
+                        [alt]="invitation.otherUserKnowAs" />
+                    <h3>{{invitation.otherUserKnowAs}}</h3>
+                    <h6>Ha Noi - Viet Nam</h6>
+                    <div class="buttons">
+                        <button class="primary" (click)="cancelInvitation(invitation.friendId)">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
