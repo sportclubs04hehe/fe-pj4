@@ -17,7 +17,7 @@ export class WebSocketService {
   // }
 
   // private connect() {
-  //   this.client = Stomp.over(new SockJS('http://localhost:8080/ws')); // Địa chỉ WebSocket
+  //   this.client = Stomp.over(new SockJS('http://localhost:8080/ws')); 
   //   this.client.activate();
   //   this.client.onConnect = (frame) => {
   //     console.log('Connected: ' + frame);
@@ -31,7 +31,7 @@ export class WebSocketService {
   // private subscribeToFriendRequests() {
   //   this.client.subscribe('/user/queue/friendRequest', (message) => {
   //     const updatedFriendship = JSON.parse(message.body);
-  //     this.friendRequestSubject.next(updatedFriendship); // Phát thông báo khi nhận được yêu cầu kết bạn
+  //     this.friendRequestSubject.next(updatedFriendship); 
   //   });
   // }
 

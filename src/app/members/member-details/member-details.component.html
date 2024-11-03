@@ -14,7 +14,7 @@
                 </span>
               </h5>
               <h6>{{member.firstName}} {{member.lastName}}</h6>
-              <p *ngIf="member.city || member.country">{{member.city}} - {{member.country}}</p>
+              <p *ngIf="member.cityName||member.stateName || member.countryName">{{member.cityName}}-{{member.stateName}} - {{member.countryName}}</p>
             </div>
           
             <!-- Đoạn mã mới ở đây -->
@@ -25,14 +25,6 @@
                     <p class="mb-1 text-white">{{images.length}}</p>
                     <p class="small mb-0 text-white">Photos</p>
                   </div>
-                  <div class="px-3">
-                    <p class="mb-1 text-white">{{like}}</p>
-                    <p class="small mb-0 text-white">Favourite</p>
-                  </div>
-                  <div>
-                    <p class="mb-1 text-white">{{likedBy}}</p>
-                    <p class="small mb-0 text-white">Being favourite</p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -40,7 +32,7 @@
           
           <div class="card-body p-4 text-black">
             <div class="mb-5  text-body">
-                <ng-container *ngIf="member.isPrivate === false; else privateTemplate">
+                <ng-container>
                   <tabset class="member-tabset" #memberTabs [justified]="true" customClass="customClass">
 
                     <tab [heading]="'Introduction of ' + member.knowAs" (selectTab)="onTabActivated($event)" id="tab1">
@@ -54,6 +46,12 @@
                         <div class="mb-1" id="tab2">
                           <p class="pt-3 um"><b>People who want to find</b></p>
                           <b>{{member.lookingFor}}</b>
+                        </div>
+                      }
+                      @if(member.interests.length > 0) {
+                        <div class="mb-1" id="tab2">
+                          <p class="pt-3 um"><b>Interest</b></p>
+                          <p *ngFor="let i of member.interests">{{i.name}}</p>
                         </div>
                       }
                       <div class="mb-1" id="tab3">
@@ -77,9 +75,9 @@
                       </div>
                     </tab>
     
-                    <tab heading="Interest" (selectTab)="onTabActivated($event)">
-                      <p>{{member.interests}}</p>
-                    </tab>
+                    <!-- <tab heading="Interest" (selectTab)="onTabActivated($event)">
+                      <p *ngFor="let i of member.interests">{{i.name}}</p>
+                    </tab> -->
     
                     <!-- <tab heading="Message" (selectTab)="onTabActivated($event)">
                       <app-member-message 
@@ -93,13 +91,13 @@
                   </tabset>
                 </ng-container>
                 
-                <ng-template #privateTemplate>
+                <!-- <ng-template #privateTemplate>
                   <div class="private-account-container text-center">
                     <i class="bi bi-shield-lock icon-private"></i>
                     <p class="message-title">This account is private</p>
                     <p class="message-subtitle">Follow to see their photos and information</p>
                   </div>
-                </ng-template>
+                </ng-template> -->
                 
             </div>
           </div>

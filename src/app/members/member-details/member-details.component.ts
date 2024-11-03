@@ -11,7 +11,6 @@ import { TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { MemberMessageComponent } from '../member-message/member-message.component';
 import { LikeService } from '../like.service';
 import { Message } from '../../shared/models/message/message.model';
-import { MessageService } from '../../message/message.service';
 
 @Component({
   selector: 'app-member-details',
@@ -44,8 +43,6 @@ export class MemberDetailsComponent implements OnInit{
 
   galleryId = 'memberGallery';
   images: GalleryItem[] = [];
-  like = 0;
-  likedBy = 0;
   activeTabs?: TabDirective;
   message: Message[] = [];
   chatUserPhotoUrl: string = '';  // Ảnh đại diện của người đang trò chuyện
@@ -54,8 +51,6 @@ export class MemberDetailsComponent implements OnInit{
   private memberService = inject(MemberService);
   private route = inject(ActivatedRoute);
   private gallery = inject(Gallery);
-  private likeService = inject(LikeService);
-  private messageService = inject(MessageService);
 
   member!: Member;
 
@@ -63,16 +58,12 @@ export class MemberDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
     this.route.data.subscribe({
       next: data => {
         this.member = data['member'];
         this.loadImages(this.member.photos);
       }
     });
-
-    this.getLiked();
-    this.getByLiked();
 
     this.route.queryParams.subscribe({
       next: params => {
@@ -84,6 +75,7 @@ export class MemberDetailsComponent implements OnInit{
 
   loadMember() {
     const username = this.route.snapshot.paramMap.get('username');
+    
     if (!username) return;
 
     this.memberService.getMember(username).subscribe({
@@ -119,22 +111,6 @@ export class MemberDetailsComponent implements OnInit{
         // },
       // });
     }
-  }
-
-  getLiked() {
-    this.likeService.getLikedCount(this.member.id).subscribe({
-      next: (response: number) => {
-        this.like = response;
-      }
-    });
-  }
-
-  getByLiked() {
-    this.likeService.getLikedByCount(this.member.id).subscribe({
-      next: (response: number) => {
-        this.likedBy = response;
-      }
-    });
   }
 
   loadImages(photos: Photo[] | null | undefined) {

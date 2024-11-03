@@ -6,16 +6,16 @@
         <div class="card">
           <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height: 200px">
             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px">
-              <img [src]="member.photoUrl || './assets/avatar.png'" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                style="width: 150px; z-index: 1" />
+              <img [src]="member.photoUrl || './assets/avatar.png'" alt="Generic placeholder image"
+                class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1" />
             </div>
             <div class="ms-3" style="margin-top: 130px">
               <h5>
                 {{ member.knowAs }}
                 <span style="font-size: 8px; color: rgb(235, 235, 235)"></span>
               </h5>
-              @if(member.city || member.country) {
-                <p>{{ member.city }} - {{ member.country }}</p>
+              @if(member.cityName || member.countryName || member.stateName) {
+              <p>{{member.cityName}} - {{ member.stateName }} - {{ member.countryName }}</p>
               }
               <p></p>
             </div>
@@ -25,52 +25,88 @@
               <tabset class="member-tabset">
                 <tab heading="Your profile" id="tab1">
                   <form [formGroup]="editForm" (ngSubmit)="updateMember()">
-                    <!-- Dirty form warning -->
                     <div *ngIf="editForm.dirty" class="alert alert-warning" role="alert">
                       <strong>Note!</strong> Please click save before leaving the page.
                     </div>
-                  
+
                     <h4 class="fs-6 px-3 py-3">About me</h4>
                     <textarea formControlName="introduction" class="form-control" rows="4"></textarea>
-                  
+
                     <h4 class="fs-6 px-3 py-3">People who want to find</h4>
                     <textarea formControlName="lookingFor" class="form-control" rows="4"></textarea>
-                  
+
                     <h4 class="fs-6 px-3 py-3">Interest</h4>
-                    <textarea formControlName="interests" class="form-control" rows="4"></textarea>
-                  
-                    <!-- City input -->
-                    <div class="mb-3">
-                      <label for="city" class="form-label">City</label>
-                      <input type="text" class="form-control" formControlName="city" id="city" />
+                    <div class="d-flex flex-wrap">
+                      <ng-container *ngFor="let interest of interest">
+                        <input 
+                          type="checkbox" 
+                          class="btn-check" 
+                          [id]="'btn-check-' + interest.id" 
+                          autocomplete="off"
+                          [checked]="selectedInterests.includes(interest.id)"
+                          (change)="toggleInterestSelection(interest.id)">
+                        <label 
+                          class="btn btn-bubble m-1" 
+                          [for]="'btn-check-' + interest.id">
+                          {{ interest.name }}
+                        </label>
+                      </ng-container>
                     </div>
-                  
-                    <!-- Country input -->
-                    <div class="mb-3">
-                      <label for="country" class="form-label">Country</label>
-                      <input type="text" class="form-control" formControlName="country" id="country" />
+                                      
+
+                    <h4 class="fs-6 px-3 py-3">Location</h4>
+
+                    <div class="form-group">
+                        <label for="country" class="form-label">Country</label>
+                        <select id="country" (change)="onCountryChange($event)" formControlName="countryId" class="form-select">
+                            <option value="" disabled selected>Select a country</option>
+                            <option *ngFor="let country of countries$()" [value]="country.id">
+                                {{ country.name }}
+                            </option>
+                        </select>
                     </div>
-                  
-                    <!-- Private Account checkbox -->
+                    
+                    <div *ngIf="states$()!.length > 0" class="form-group">
+                        <label for="state" class="form-label">State</label>
+                        <select id="state" (change)="onStateChange($event)" formControlName="stateId" class="form-select">
+                            <option value="" disabled selected>Select a state</option>
+                            <option *ngFor="let state of states$()" [value]="state.id">
+                                {{ state.name }}
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div *ngIf="cities$()!.length > 0" class="form-group">
+                        <label for="city" class="form-label">City</label>
+                        <select id="city" formControlName="cityId" class="form-select">
+                            <option value="" disabled selected>Select a city</option>
+                            <option *ngFor="let city of cities$()" [value]="city.id">
+                                {{ city.name }}
+                            </option>
+                        </select>
+                    </div>                    
+
                     <div class="form-check mb-3">
                       <input class="form-check-input me-2" type="checkbox" id="isPrivate" formControlName="isPrivate">
                       <label class="form-check-label pt-1" for="isPrivate">Private Account</label>
                     </div>
-                  
-                    <!-- Save button -->
+
                     <div class="d-flex justify-content-center">
                       <button class="btn btn-success" [disabled]="!editForm.dirty">
                         Save all changes
                       </button>
+
+                      <button class="btn btn-primary mx-3" routerLink="/members/{{member.email}}">
+                        Preview
+                      </button>
                     </div>
                   </form>
-                  
+
                 </tab>
 
                 <tab heading="Edit photo">
                   <app-photo-editor [member]="member" (memberChange)="onMemberChange($event)"></app-photo-editor>
                 </tab>
-
               </tabset>
 
             </div>

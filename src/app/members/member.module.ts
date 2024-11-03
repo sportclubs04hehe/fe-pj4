@@ -6,6 +6,7 @@ import { MemberRoutingModule } from './member-routing.module';
 import { MemberCardComponent } from './member-card/member-card.component';
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
+import { MemberDetailsComponent } from "./member-details/member-details.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
     CommonModule,
     SharedModule,
     MemberRoutingModule,
-  ]
+    MemberDetailsComponent
+]
 })
 export class MemberModule { }

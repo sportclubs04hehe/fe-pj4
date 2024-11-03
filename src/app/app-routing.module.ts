@@ -10,6 +10,7 @@ import { ServerErrorComponent } from './shared/erors/server-error/server-error.c
 import { adminGuard } from './shared/guard/admin.guard';
 import { FriendshipComponent } from './friendships/friendship/friendship.component';
 import { ListFriendsComponent } from './friendships/list-friends/list-friends.component';
+import { PostComponent } from './posts/post/post.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'list', component: ListComponent },
       { path: 'friendships', component: FriendshipComponent },
       { path: 'list-friendships', component: ListFriendsComponent },
+      { path: 'post', component: PostComponent },
       { path: 'message', component: MessageComponent },
       {
         path: 'members',

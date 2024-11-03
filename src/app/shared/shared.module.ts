@@ -68,7 +68,6 @@ import { HasRoleDirective } from './has-role.directive';
     ButtonsModule,
     TimeagoModule,
     HasRoleDirective,
-    
   ]
 })
 export class SharedModule { }

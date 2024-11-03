@@ -17,6 +17,8 @@ import { loadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FriendshipComponent } from './friendships/friendship/friendship.component';
 import { ListFriendsComponent } from './friendships/list-friends/list-friends.component';
+import { PostComponent } from './posts/post/post.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { ListFriendsComponent } from './friendships/list-friends/list-friends.co
     MessageComponent,
     FriendshipComponent,
     ListFriendsComponent,
+    PostComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +38,8 @@ import { ListFriendsComponent } from './friendships/list-friends/list-friends.co
     BrowserAnimationsModule,
     BsDropdownModule,
     NgxSpinnerModule,
+    SharedModule,
+    ModalModule.forRoot(),
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor, loadingInterceptor])),

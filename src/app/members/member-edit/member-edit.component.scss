@@ -54,3 +54,48 @@ tab {
       
   }
   
+  .btn-bubble {
+    background-color: #17a2b8; /* Màu nền */
+    color: white; /* Màu chữ */
+    border-radius: 30px; /* Bo tròn góc */
+    padding: 10px 20px; /* Khoảng cách bên trong */
+    margin: 5px; /* Khoảng cách giữa các nút */
+    transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng chuyển tiếp */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+}
+
+.btn-bubble:hover {
+    background-color: #138496; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to một chút khi hover */
+}
+
+.btn-check:checked + .btn-bubble {
+    background-color: #0d6efd; /* Màu nền cho nút khi được chọn */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5); /* Đổ bóng khác khi được chọn */
+}
+
+.form-group {
+  margin-bottom: 20px; /* Khoảng cách giữa các nhóm form */
+}
+
+.form-label {
+  font-weight: bold; /* Đậm chữ */
+  color: #333; /* Màu chữ cho nhãn */
+  margin-bottom: 8px; /* Khoảng cách dưới nhãn */
+}
+
+.form-select {
+  border: 2px solid #17a2b8; /* Màu viền */
+  border-radius: 8px; /* Bo tròn góc */
+  padding: 10px; /* Khoảng cách bên trong */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+.form-select:focus {
+  border-color: #0d6efd; /* Màu viền khi chọn */
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); /* Hiệu ứng bóng */
+}
+
+.form-select option {
+  padding: 10px; /* Khoảng cách bên trong cho các tùy chọn */
+}

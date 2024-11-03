@@ -1,3 +1,4 @@
+import { Interest } from "./interest.model";
 import { Photo } from "./photo.model"
 
 export interface Member {
@@ -13,10 +14,14 @@ export interface Member {
     gender: string;
     isPrivate: boolean;
     introduction: string;
-    interests: string;
+    interests: Interest[];
     lookingFor: string;
-    city: string;
-    country: string;
+    countryName: string;
+    stateName: string;
+    cityName: string;
+    countryId: number;
+    stateId: number;
+    cityId: number;
     photos: Photo[];
 }
 
