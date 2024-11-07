@@ -1,0 +1,70 @@
+/* Avatar styles */
+.avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+/* Post card styles */
+.post-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 1.25rem;
+}
+
+.post-card .card-body {
+    padding: 15px;
+}
+
+/* Styling the name, date and content */
+.card-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.card-text {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Date formatting */
+.small {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Post actions buttons */
+.post-actions button {
+    margin-right: 8px;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.875rem;
+}
+
+.post-actions button:hover {
+    background-color: #f0f2f5;
+}
+
+/* Styling the post-list container */
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.post-list .post-card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.post-list .post-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Centering content when no posts are available */
+.text-center {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #6c757d;
+}

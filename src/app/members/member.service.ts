@@ -5,7 +5,7 @@ import { Member } from '../shared/models/user/member.model';
 import { Photo } from '../shared/models/user/photo.model';
 import { PaginatedResult } from '../shared/models/user/pagination.model';
 import { UserParams } from '../shared/models/account/user-params.model';
-import { catchError, find, of, tap, throwError } from 'rxjs';
+import { catchError, find, map, Observable, of, tap, throwError } from 'rxjs';
 import { AccountService } from '../account/account.service';
 import { setPaginateResponse, setPaginationHeaders } from '../shared/pagination-helpers';
 import { Friendships, FriendshipStatus } from '../shared/models/user/friendships.model';
@@ -14,6 +14,8 @@ import { State } from '../shared/models/user/state.model';
 import { City } from '../shared/models/user/city.model';
 import { MemberUpdateDto } from '../shared/models/user/member-update.model';
 import { Interest } from '../shared/models/user/interest.model';
+import { PostRequest } from '../shared/models/user/post.model';
+import { PostResponse } from '../shared/models/user/post-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +32,7 @@ export class MemberService {
   memberCache = new Map();
   user = this.accountService.user$();
   userParams = signal<UserParams>(new UserParams(this.user));
+
   private countries = signal<Country[]>([]);
   private states = signal<State[]>([]);
   private cities = signal<City[]>([]);
@@ -37,6 +40,99 @@ export class MemberService {
   getCountries = computed(() => this.countries());
   getStates = computed(() => this.states());
   getCities = computed(() => this.cities());
+
+  deletePost(postId: number): Observable<string> {
+    return this.http.delete<string>(`${this.api}/post/${postId}`);
+  }
+
+  updatePost(postId: number, postRequest: PostRequest) {
+    return this.http.put<PostResponse>(`${this.api}/post/${postId}`, postRequest, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response'
+    }).pipe(
+      tap(response => console.log('Response:', response)),
+      map(response => {
+        if (response.body) {
+          return response.body;
+        } else {
+          return { message: 'Post updated successfully!' };
+        }
+      })
+    );
+  }
+
+  addPhotosToPost(postId: any, files: File[]): Observable<PostResponse | null> {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+
+    console.log('Sending files to API:', files); // Log the files being sent
+
+    return this.http.post<PostResponse>(`${this.api}/post/${postId}/photos`, formData, {
+      observe: 'response'
+    }).pipe(
+      tap(response => console.log('Response from API:', response)), // Log the full response
+      map(response => {
+        if (response.body) {
+          console.log('Response body:', response.body); // Log the response body
+          return response.body; // Return the body
+        } else {
+          console.warn('No body in response'); // Warn if no body is present
+          return null; // Return null if no body
+        }
+      }),
+      catchError(err => {
+        console.error('Error adding photos:', err); // Log the error
+        return throwError(err); // Propagate the error
+      })
+    );
+  }
+
+  removePhotoFromPost(postId: any, photoId: any) {
+    return this.http.delete(`${this.api}/post/${postId}/photos/${photoId}`, { responseType: 'text' }).pipe(
+      tap(response => console.log('Photo removed:', response)),
+      map((response: string) => response), // Directly return the string response
+      catchError(err => {
+        console.error('Error removing photo:', err);
+        return throwError(err); // Propagate the error
+      })
+    );
+  }
+
+  getPostId(userId: string) {
+    return this.http.get<PostResponse[]>(`${this.api}/post?userId=${userId}`);
+  }
+
+  createPost(postRequest: PostRequest, files?: File[]) {
+    const formData = new FormData();
+    formData.append('content', postRequest.content);
+
+    if (files) {
+      files.forEach(file => {
+        formData.append('files', file);
+      });
+    }
+
+    return this.http.post(`${this.api}/post`, formData, {
+      headers: new HttpHeaders({
+        'enctype': 'multipart/form-data'
+      }),
+      observe: 'response'
+    }).pipe(
+      tap(response => console.log('Response:', response)),
+      map(response => {
+        // Kiểm tra nếu body có tồn tại hoặc không
+        if (response.body !== null && response.body !== undefined) {
+          return response.body;
+        } else {
+          // Xử lý khi không có body, có thể trả về một giá trị mặc định hoặc chỉ mã trạng thái
+          return { message: 'Post created successfully!' };
+        }
+      })
+    );
+  }
+
 
   // Phương thức để xóa cities
   clearCities() {
@@ -76,7 +172,7 @@ export class MemberService {
       )
       .subscribe(data => this.cities.set(data));
   }
-  
+
   // Phương thức lấy trạng thái kết bạn
   getFriendshipStatus(friendId: string) {
     return this.http.get<Friendships>(`${this.api}/friendships/status/${friendId}`).pipe(

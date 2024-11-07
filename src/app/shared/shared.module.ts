@@ -20,6 +20,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from "ngx-timeago";
 import { HasRoleDirective } from './has-role.directive';
+import { ImagePreviewModalComponent } from './modals/image-preview-modal/image-preview-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HasRoleDirective } from './has-role.directive';
     TestErrorComponent,
     TextInputComponent,
     DatePickerComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    ImagePreviewModalComponent
   ],
   imports: [
     CommonModule,
@@ -68,6 +70,7 @@ import { HasRoleDirective } from './has-role.directive';
     ButtonsModule,
     TimeagoModule,
     HasRoleDirective,
+    ImagePreviewModalComponent,
   ]
 })
 export class SharedModule { }

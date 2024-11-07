@@ -9,9 +9,6 @@ import { Router } from '@angular/router';
 import { ConfirmEmail } from '../shared/models/account/confirm-email.model';
 import { ResetPassword } from '../shared/models/account/reset-password.model';
 import { LikeService } from '../members/like.service';
-import { Country } from '../shared/models/user/country.model';
-import { State } from '../shared/models/user/state.model';
-import { City } from '../shared/models/user/city.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +17,7 @@ export class AccountService implements OnInit {
   private api = environment.appUrl;
 
   private userSignal = signal<User | null>(null);
+  user$ = computed(() => this.userSignal());
 
   private userDataSubject = new BehaviorSubject<any>({
     username: '',
@@ -29,8 +27,6 @@ export class AccountService implements OnInit {
   });
 
   userData$ = this.userDataSubject.asObservable();
-
-  user$ = computed(() => this.userSignal());
 
   role = computed(() => {
     const user = this.userSignal();
@@ -63,18 +59,6 @@ export class AccountService implements OnInit {
     return this.userDataSubject.value;
   }
 
-  getCountries() {
-    return this.http.get<Country[]>(`${this.api}/auth/countries`);
-  }
-
-  getStateOfSelectedCountry(countryIso: string) {
-    return this.http.get<State[]>(`${this.api}/auth/states/${countryIso}`);
-  }
-
-  getCitiesOfSelectedState(countryIso: string, stateIso: string) {
-    return this.http.get<City[]>(`${this.api}/auth/cities/${countryIso}/${stateIso}`);
-  }
-  
   private loadStoredUser() {
     const storedUser = localStorage.getItem(environment.userKey);
     if (storedUser) {

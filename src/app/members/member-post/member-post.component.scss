@@ -1,0 +1,77 @@
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    color: #000;
+    opacity: 0.7;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.post-textarea {
+    border: none;
+    resize: none;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f2f3f5;
+}
+
+.post-textarea:focus {
+    border: none;
+    outline: none;
+    box-shadow: none; /* Đảm bảo không có shadow khi nhấn vào */
+}
+
+.upload-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.upload-text {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.modal-footer {
+    padding-top: 0;
+}
+
+.btn-primary {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.text-end {
+    text-align: right;
+}
+
+/* Increase z-index for the nz-modal */
+.ant-modal {
+    z-index: 1050; /* Ensure this is lower than your preview modal */
+}
+
+.custom-preview-modal {
+    z-index: 1051; /* Set this higher for the preview modal */
+}

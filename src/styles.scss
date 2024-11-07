@@ -26,4 +26,14 @@
     border-top: 1px solid #eee;
     padding: 15px 0;
   }
+
+/* Add this to your global styles (styles.css or styles.scss) */
+.nz-modal {
+  z-index: 1050 !important; /* Ensure this is lower than the preview modal */
+}
+
+.nz-modal-preview {
+  z-index: 1060 !important; /* Ensure this is higher than the main modal */
+}
+  
   

@@ -2,7 +2,7 @@ import { Interest } from "./interest.model";
 import { Photo } from "./photo.model"
 
 export interface Member {
-    id: string;
+    id: any;
     firstName: string;
     lastName: string;
     email: string;

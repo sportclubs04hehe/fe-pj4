@@ -25,7 +25,9 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/angular17",
-            "allowedCommonJsDependencies": ["sockjs-client"],
+            "allowedCommonJsDependencies": [
+              "sockjs-client"
+            ],
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -44,7 +46,12 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootswatch/dist/lux/bootstrap.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/ng-zorro-antd/resizable/style/index.min.css",
+              "node_modules/ng-zorro-antd/code-editor/style/index.min.css",
+              "node_modules/ng-zorro-antd/graph/style/index.min.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -81,9 +88,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "options": {
-
-          },
+          "options": {},
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {

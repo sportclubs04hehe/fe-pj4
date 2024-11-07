@@ -9,8 +9,9 @@ import { CommonModule, NgFor } from '@angular/common';
 import { TabDirective, TabsetComponent, TabsModule } from 'ngx-bootstrap/tabs';
 import { TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { MemberMessageComponent } from '../member-message/member-message.component';
-import { LikeService } from '../like.service';
 import { Message } from '../../shared/models/message/message.model';
+import { Friendships, FriendshipStatus } from '../../shared/models/user/friendships.model';
+import { ListPostMemberComponent } from '../list-post-member/list-post-member.component';
 
 @Component({
   selector: 'app-member-details',
@@ -26,6 +27,7 @@ import { Message } from '../../shared/models/message/message.model';
     RouterLink,
     TimeagoModule,
     MemberMessageComponent,
+    ListPostMemberComponent
   ],
   providers:[
     {
@@ -40,6 +42,7 @@ import { Message } from '../../shared/models/message/message.model';
 })
 export class MemberDetailsComponent implements OnInit{
   @ViewChild('memberTabs', {static: true}) memberTabs?: TabsetComponent;
+  @ViewChild('photoTab', { static: true }) photoTab?: TabDirective;
 
   galleryId = 'memberGallery';
   images: GalleryItem[] = [];
@@ -51,65 +54,48 @@ export class MemberDetailsComponent implements OnInit{
   private memberService = inject(MemberService);
   private route = inject(ActivatedRoute);
   private gallery = inject(Gallery);
+  public FriendshipStatus = FriendshipStatus;
 
   member!: Member;
+  friendshipStatus: FriendshipStatus | null = null; 
 
   constructor(){
   }
 
   ngOnInit(): void {
+    // Lấy dữ liệu member từ route resolver
     this.route.data.subscribe({
       next: data => {
         this.member = data['member'];
         this.loadImages(this.member.photos);
+  
+        // Sau khi có member, lấy trạng thái kết bạn
+        this.memberService.getFriendshipStatus(this.member.id).subscribe({
+          next: (status: Friendships) => {
+            if (status !== null) {
+              this.friendshipStatus = status.status;
+            }
+          },
+          error: () => {
+            console.error('Failed to get friendship status');
+          }
+        });
       }
     });
-
+  
+    // Kiểm tra query params để điều hướng tab nếu có
     this.route.queryParams.subscribe({
       next: params => {
-        params['tab'] && this.selectTab(params['tab']);
+        if (params['tab']) {
+          this.selectTab(params['tab']);
+        }
       }
     });
-
-  }
-
-  loadMember() {
-    const username = this.route.snapshot.paramMap.get('username');
-    
-    if (!username) return;
-
-    this.memberService.getMember(username).subscribe({
-      next: (value: Member) => {
-        this.member = value;
-        this.loadImages(value.photos);
-      },
-    });
-  }
+  }  
 
   onTabActivated(data: TabDirective) {
     this.activeTabs = data;
     if(this.activeTabs.heading === 'Message' && this.message.length === 0 && this.member) {
-      // this.messageService.getMessageThread(this.member.email).subscribe({
-        // next: (response) => {
-        //   if (response.length > 0) {
-        //     const lastMessage = response[response.length - 1];
-        //
-        //     // Xác định người đang trò chuyện: nếu username là người gửi thì lấy thông tin người nhận, ngược lại lấy thông tin người gửi
-        //     // if (this.member.email !== lastMessage.senderUsername) {
-        //     //   this.chatUserPhotoUrl = lastMessage.recipientPhotoUrl;
-        //     //   this.chatUserName = lastMessage.recipientKnowAs;
-        //     // } else {
-        //     //   this.chatUserPhotoUrl = lastMessage.senderPhotoUrl;
-        //     //   this.chatUserName = lastMessage.senderKnowAs;
-        //     // }
-        //   }else {
-        //     // Nếu chưa có tin nhắn, gọi API lấy thông tin người dùng
-        //     this.loadChatUserInfo();
-        //   }
-        //
-        //   this.message = response;
-        // },
-      // });
     }
   }
 
@@ -122,22 +108,6 @@ export class MemberDetailsComponent implements OnInit{
     } else {
       this.images = [];
     }
-  }
-
-  loadChatUserInfo() {
-    this.memberService.getMember(this.member.email).subscribe({
-      next: (member) => {
-        this.chatUserPhotoUrl = member.photoUrl || './assets/avatar.png';  
-        this.chatUserName = member.knowAs;  
-      },
-      error: (err) => {
-        console.error('Lỗi khi lấy thông tin người dùng:', err);
-      }
-    });
-  }
-
-  onUpdateMessage(event: Message) {
-    this.message.push(event);
   }
 
   selectTab(heading: string) {

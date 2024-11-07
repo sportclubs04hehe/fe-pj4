@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AccountService } from '../account/account.service';
 import { NgIf } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { PostComponent } from '../posts/post/post.component';
+import { MemberPostComponent } from '../members/member-post/member-post.component';
 
 @Component({
   selector: 'app-navbar',
@@ -21,8 +21,8 @@ export class NavbarComponent {
   }
 
   openPostModal(): void {
-    this.bsModalRef = this.modalService.show(PostComponent, {
-      class: 'modal-dialog-centered'
+    this.bsModalRef = this.modalService.show(MemberPostComponent, {
+      class: 'modal-dialog-centered modal-lg'
     });
   }
 

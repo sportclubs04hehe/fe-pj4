@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { Member } from '../../shared/models/user/member.model';
 import { AccountService } from '../../account/account.service';
 import { MemberService } from '../member.service';
@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MemberUpdateDto } from '../../shared/models/user/member-update.model';
 import { Interest } from '../../shared/models/user/interest.model';
+import { TabDirective } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-member-edit',
@@ -15,10 +16,10 @@ import { Interest } from '../../shared/models/user/interest.model';
 })
 export class MemberEditComponent implements OnInit {
   member!: Member;
-  user!: User;
   editForm!: FormGroup;
   interest: Interest[] = [];
   selectedInterests: number[] = [];
+  @ViewChild('photoTab', { static: true }) photoTab?: TabDirective;
 
   selectedCountryIso = signal<string | null>(null);
   selectedStateIso = signal<string | null>(null);
@@ -39,6 +40,8 @@ export class MemberEditComponent implements OnInit {
     this.loadInterest();
     this.loadMember();
   }
+
+  
 
   onCountryChange(event: Event) {
     const target = event.target as HTMLSelectElement;

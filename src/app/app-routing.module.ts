@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './shared/erors/not-found/not-found.component';
-import { HomeComponent } from './home/home.component';
 import { authorizationGuard } from './shared/guard/authorization.guard';
 import { ListComponent } from './list/list.component';
 import { MessageComponent } from './message/message.component';
@@ -10,12 +9,12 @@ import { ServerErrorComponent } from './shared/erors/server-error/server-error.c
 import { adminGuard } from './shared/guard/admin.guard';
 import { FriendshipComponent } from './friendships/friendship/friendship.component';
 import { ListFriendsComponent } from './friendships/list-friends/list-friends.component';
-import { PostComponent } from './posts/post/post.component';
+import { LoginComponent } from './account/login/login.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: LoginComponent,
   },
   {
     path: '',
@@ -25,7 +24,6 @@ const routes: Routes = [
       { path: 'list', component: ListComponent },
       { path: 'friendships', component: FriendshipComponent },
       { path: 'list-friendships', component: ListFriendsComponent },
-      { path: 'post', component: PostComponent },
       { path: 'message', component: MessageComponent },
       {
         path: 'members',

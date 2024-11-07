@@ -7,6 +7,7 @@ import { MemberCardComponent } from './member-card/member-card.component';
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
 import { MemberDetailsComponent } from "./member-details/member-details.component";
+import { ListPostMemberComponent } from "./list-post-member/list-post-member.component";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MemberDetailsComponent } from "./member-details/member-details.componen
     CommonModule,
     SharedModule,
     MemberRoutingModule,
-    MemberDetailsComponent
+    MemberDetailsComponent,
+    ListPostMemberComponent
 ]
 })
 export class MemberModule { }

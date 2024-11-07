@@ -1,0 +1,47 @@
+<p *ngIf="isLoading" class="text-center py-5">Loading posts...</p>
+<p *ngIf="!isLoading && listPostMember && listPostMember.length === 0" class="text-center py-5">
+    {{ member?.knowAs || getKnowAsCurrentUser () }} has no posts yet
+</p>
+    <div class="container mt-4">
+        <div class="post-list">
+            @for (item of listPostMember; track item.id) {
+                <div class="post-card card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div class="d-flex align-items-start">
+                                <img [src]="member?.photoUrl || getPhotoMainCurrentUser  () || './assets/avatar.png'" alt="User  Avatar" class="avatar rounded-circle me-3" width="50" height="50">
+                                <div>
+                                    <h5 class="card-title">{{ member?.knowAs || getKnowAsCurrentUser () | titlecase }}</h5>
+                                    <p class="card-text">{{ item.content }}</p>
+                                    <small class="text-muted">
+                                        <ng-container *ngIf="(item.createdAt | timeago) === '1 day ago'; else displayDate">
+                                            {{ item.createdAt | date: 'short' }}
+                                        </ng-container>
+                                        <ng-template #displayDate>
+                                            {{ item.createdAt | timeago }}
+                                        </ng-template>
+                                    </small>
+                                </div>
+                            </div>
+                            <!-- Three-Dot Button -->
+                            <div class="dropdown">
+                                <button class="btn btn-link" type="button" id="optionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="optionsMenu">
+                                    <li><a class="dropdown-item" (click)="openEditPostModal(item)">Edit Post</a></li>
+                                    <li><a class="dropdown-item text-danger" (click)="deletePost(item.id)">Delete Post</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <gallery *ngIf="photoTab.active" [id]="'gallery-' + item.id" [items]="imagesByPost.get(item.id) || []" thumbPosition="left"></gallery>
+                        <div class="post-actions mt-3">
+                            <button class="btn btn-outline-primary btn-sm">Like</button>
+                            <button class="btn btn-outline-secondary btn-sm">Comment</button>
+                            <button class="btn btn-outline-info btn-sm">Share</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>

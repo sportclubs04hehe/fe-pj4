@@ -10,7 +10,7 @@
             <div class="ms-3" style="margin-top: 130px;">
               <h5>{{member.knowAs}} 
                 <span class="text-info" style="font-size: 8px;">
-                  <i *ngIf="member.lastActive">(Active <b>{{capitalize(member.lastActive | timeago)}})</b></i>
+                  <i *ngIf="friendshipStatus === FriendshipStatus.ACCEPTED && member.lastActive">(Active <b>{{capitalize(member.lastActive | timeago)}})</b></i>
                 </span>
               </h5>
               <h6>{{member.firstName}} {{member.lastName}}</h6>
@@ -75,9 +75,9 @@
                       </div>
                     </tab>
     
-                    <!-- <tab heading="Interest" (selectTab)="onTabActivated($event)">
-                      <p *ngFor="let i of member.interests">{{i.name}}</p>
-                    </tab> -->
+                    <tab #photoTab="tab" heading="Post" (selectTab)="onTabActivated($event)">
+                      <app-list-post-member [member]="member" [photoTab]="photoTab"></app-list-post-member>
+                    </tab>
     
                     <!-- <tab heading="Message" (selectTab)="onTabActivated($event)">
                       <app-member-message 

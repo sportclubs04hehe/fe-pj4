@@ -1,0 +1,37 @@
+<div class="modal-header border-0">
+    <h5 class="modal-title text-center w-100">Create Post</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+</div>
+<div class="modal-body">
+    <div class="d-flex align-items-center mb-3">
+        <img [src]="accountService.user$()!.photoUrl || './assets/avatar.png'" class="avatar rounded-circle me-2">
+        <span class="username">{{ accountService.user$()!.knowAs | titlecase}}</span>
+    </div>
+    <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+        <textarea class="form-control post-textarea" rows="3" [placeholder]="getPlaceholder()" nz-input
+            formControlName="content" style="background: white !important; border: none; color: black;" autofocus>
+        </textarea>
+        <div class="upload-section mt-3">
+            <nz-upload nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 5"
+                [nzPreview]="handlePreview" >
+                <div>
+                    <span nz-icon nzType="plus"></span>
+                    <div style="margin-top: 8px">Upload image</div>
+                </div>
+            </nz-upload>
+
+            <nz-modal 
+    [nzVisible]="previewVisible" 
+    [nzContent]="modalContent" 
+    [nzFooter]="null" 
+    (nzOnCancel)="previewVisible = false" 
+    [nzStyle]="{ 'z-index': '1051' }"> <!-- Set a higher z-index -->
+    <ng-template #modalContent> 
+        <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+</nz-modal>
+
+            <button nz-button nzType="primary" class="w-25" [disabled]="postForm.invalid">Post</button>
+        </div>
+    </form>
+</div>

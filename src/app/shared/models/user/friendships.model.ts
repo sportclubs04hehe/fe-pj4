@@ -1,5 +1,5 @@
 export interface Friendships {
-    id: number;
+    id: any;
     otherUserKnowAs: string;
     otherUserPhotoUrl: string;
     otherUserEmail: string;

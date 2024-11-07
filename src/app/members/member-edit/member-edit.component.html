@@ -23,6 +23,11 @@
           <div class="card-body p-4 text-black mt-5">
             <div class="mb-5 text-body">
               <tabset class="member-tabset">
+
+                <tab heading="Your post" #photoTab="tab">
+                  <app-list-post-member [photoTab]="photoTab"></app-list-post-member>
+                </tab>
+
                 <tab heading="Your profile" id="tab1">
                   <form [formGroup]="editForm" (ngSubmit)="updateMember()">
                     <div *ngIf="editForm.dirty" class="alert alert-warning" role="alert">

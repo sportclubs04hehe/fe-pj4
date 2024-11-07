@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -41,11 +41,28 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           default:
-            toastr.error('Đã xảy ra sự cố ngoài ý muốn', error.status);
-            break;
+            let errorMsg = '';
+            if (error.error instanceof ErrorEvent) {
+                // Lỗi phía client
+                errorMsg = `Error: ${error.error.message}`;
+            } else {
+                // Lỗi phía server
+                if (error.status === 200 && error.url) {
+                    // Kiểm tra nếu phản hồi không phải là JSON
+                    if (typeof error.error === 'string') {
+                        errorMsg = `Server responded with a string: ${error.error}`;
+                    } else {
+                        errorMsg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+                    }
+                } else {
+                    errorMsg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+                }
+            }
+            console.error(errorMsg);
+            return throwError(() => error);
         }
       }
-      
+
       throw error;
     }),
   );
