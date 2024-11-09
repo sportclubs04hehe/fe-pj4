@@ -14,6 +14,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { ImagePreviewModalComponent } from '../../shared/modals/image-preview-modal/image-preview-modal.component';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { PostVisibility } from '../../shared/models/user/post.model';
 
 @Component({
   selector: 'app-member-post',
@@ -36,6 +37,7 @@ export class MemberPostComponent {
   fileList: NzUploadFile[] = [];
   previewImage: string | undefined = '';
   previewVisible = false;
+  visibilityOptions = Object.values(PostVisibility); // Sử dụng enum để tạo danh sách lựa chọn
 
   constructor(public bsModalRef: BsModalRef,
     private memberService: MemberService,
@@ -46,7 +48,8 @@ export class MemberPostComponent {
     private toastr: ToastrService
   ) {
     this.postForm = this.fb.group({
-      content: ['']
+      content: [''],
+      visibility: ['PUBLIC'] 
     });
   }
 
@@ -72,21 +75,21 @@ export class MemberPostComponent {
     });
   }
 
-  submitPost() {
+  submitPost() { 
     if (this.postForm.invalid) {
       console.error('Vui lòng điền đầy đủ thông tin!');
       return;
     }
-
-    const { content } = this.postForm.value;
+  
+    const { content, visibility } = this.postForm.value; // Lấy visibility từ form
     const files = this.fileList
       .map(file => file.originFileObj)
       .filter((file): file is File => !!file);
-
-    this.memberService.createPost({ content }, files).subscribe({
+  
+    this.memberService.createPost({ content, visibility }, files).subscribe({
       next: (res: any) => {
         console.log('res post', res);
-
+  
         this.postForm.reset();
         this.fileList = [];
         this.closeModal();

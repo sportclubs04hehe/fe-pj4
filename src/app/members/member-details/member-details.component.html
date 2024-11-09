@@ -14,7 +14,7 @@
                 </span>
               </h5>
               <h6>{{member.firstName}} {{member.lastName}}</h6>
-              <p *ngIf="member.cityName||member.stateName || member.countryName">{{member.cityName}}-{{member.stateName}} - {{member.countryName}}</p>
+              <p *ngIf="member.cityName||member.stateName || member.countryName">{{member.cityName}} - {{member.stateName}} - {{member.countryName}}</p>
             </div>
           
             <!-- Đoạn mã mới ở đây -->
@@ -24,6 +24,10 @@
                   <div>
                     <p class="mb-1 text-white">{{images.length}}</p>
                     <p class="small mb-0 text-white">Photos</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="mb-1 text-white">{{countFriend}}</p>
+                    <p class="small mb-0 text-white">Friends</p>
                   </div>
                 </div>
               </div>

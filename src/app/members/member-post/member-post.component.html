@@ -11,25 +11,30 @@
         <textarea class="form-control post-textarea" rows="3" [placeholder]="getPlaceholder()" nz-input
             formControlName="content" style="background: white !important; border: none; color: black;" autofocus>
         </textarea>
+
+        <!-- Dropdown chọn trạng thái bài viết -->
+        <div class="form-group mt-2">
+            <label for="visibilitySelect">Chọn trạng thái bài viết:</label>
+            <select id="visibilitySelect" class="form-control" formControlName="visibility">
+                <option *ngFor="let option of visibilityOptions" [value]="option">{{ option }}</option>
+            </select>
+        </div>
+
         <div class="upload-section mt-3">
             <nz-upload nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 5"
-                [nzPreview]="handlePreview" >
+                [nzPreview]="handlePreview">
                 <div>
                     <span nz-icon nzType="plus"></span>
                     <div style="margin-top: 8px">Upload image</div>
                 </div>
             </nz-upload>
 
-            <nz-modal 
-    [nzVisible]="previewVisible" 
-    [nzContent]="modalContent" 
-    [nzFooter]="null" 
-    (nzOnCancel)="previewVisible = false" 
-    [nzStyle]="{ 'z-index': '1051' }"> <!-- Set a higher z-index -->
-    <ng-template #modalContent> 
-        <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-    </ng-template>
-</nz-modal>
+            <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+                (nzOnCancel)="previewVisible = false" [nzStyle]="{ 'z-index': '1051' }">
+                <ng-template #modalContent>
+                    <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+                </ng-template>
+            </nz-modal>
 
             <button nz-button nzType="primary" class="w-25" [disabled]="postForm.invalid">Post</button>
         </div>

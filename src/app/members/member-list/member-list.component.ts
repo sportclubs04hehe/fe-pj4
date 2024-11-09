@@ -8,23 +8,29 @@ import { AccountService } from '../../account/account.service';
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
 })
-export class MemberListComponent implements OnInit{
+export class MemberListComponent implements OnInit {
   memberService = inject(MemberService);
   accountService = inject(AccountService);
+
+  knowAs: string = ''; 
 
   genderList = [
     {value: 'male', display: 'Male'},
     {value: 'female', display: 'Female'},
-   ];
+  ];
 
   ngOnInit(): void {
-    if(!this.memberService.paginatedResult()) {
+    if (!this.memberService.paginatedResult()) {
       this.loadMember();
     }
   }
 
-  loadMember() {
-    this.memberService.loadMembers();
+  searchByKnowAs() {
+    this.loadMember(this.knowAs); // Gọi loadMember() với giá trị knowAs
+  }  
+
+  loadMember(knowAs: string = '') {
+    this.memberService.loadMembers(knowAs);
   }
 
   resetFilter() {
@@ -33,10 +39,9 @@ export class MemberListComponent implements OnInit{
   }
 
   pageChanged(event: PageChangedEvent) {
-    if(this.memberService.userParams().pageNumber !== event.page) {
+    if (this.memberService.userParams().pageNumber !== event.page) {
       this.memberService.userParams().pageNumber = event.page;
       this.loadMember();
     }
   }
-  
 }

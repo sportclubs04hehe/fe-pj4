@@ -13,7 +13,6 @@ export class FriendshipComponent implements OnInit {
   friendRequests: Friendships[] = [];
   invitationsSent: Friendships[] = [];
   selectedTab: string = 'requests';
-  private friendRequestSubscription!: Subscription;
 
   constructor(private friendshipService: FriendshipService,
     private accountService: AccountService

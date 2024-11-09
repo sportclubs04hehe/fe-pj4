@@ -8,7 +8,9 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 
   console.log(`Interceptor kích hoạt cho: ${req.url}`);
 
-  const shouldBypass = req.url.includes('http://localhost:8088/messages') || req.url.includes('friendships/status');
+  const shouldBypass = req.url.includes('http://localhost:8088/messages') || req.url.includes('friendships/status')
+  || /http:\/\/localhost:8080\/api\/v1\/post\?userId=\d+/.test(req.url)
+  || req.url.includes('friendships/count');
 
   if (shouldBypass) {
     return next(req);

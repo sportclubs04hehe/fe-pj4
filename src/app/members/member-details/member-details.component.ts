@@ -50,6 +50,7 @@ export class MemberDetailsComponent implements OnInit{
   message: Message[] = [];
   chatUserPhotoUrl: string = '';  // Ảnh đại diện của người đang trò chuyện
   chatUserName: string = '';      // Tên của người đang trò chuyện
+  countFriend: number = 0;
 
   private memberService = inject(MemberService);
   private route = inject(ActivatedRoute);
@@ -78,6 +79,12 @@ export class MemberDetailsComponent implements OnInit{
           },
           error: () => {
             console.error('Failed to get friendship status');
+          }
+        });
+
+        this.memberService.getCountFriendShip(this.member.id).subscribe({
+          next: (res: any) => {
+            this.countFriend = res;
           }
         });
       }

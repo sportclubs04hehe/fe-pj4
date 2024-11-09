@@ -2,7 +2,89 @@
     <div class="col-12 d-flex justify-content-between align-items-center custom-form">
         <!-- Nhóm nút bên trái -->
         <div class="btn-group mt-4" role="group">
-            <!-- <button 
+            <button 
+            type="button" 
+            class="btn btn-info"
+            [ngClass]="{'active': memberService.userParams().orderBy === 'dateCreated'}"
+            (click)="loadMember()"
+            btnRadio="dateCreated"
+            [(ngModel)]="memberService.userParams().orderBy">
+            Recently joined
+            </button>
+        </div>
+        <!-- Các ô input và nút tìm kiếm bên phải -->
+        <form #form="ngForm" (ngSubmit)="loadMember()">
+            <div class="d-flex align-items-center">
+                <div class="form-group me-3 mb-0">
+                    <label for="minAge" class="sr-only">Minimum age</label>
+                    <input type="number" class="form-control form-control-lg custom-input" name="minAge"
+                        [(ngModel)]="memberService.userParams().minAge" id="minAge">
+                </div>
+                <div class="form-group me-3 mb-0">
+                    <label for="maxAge" class="sr-only">Maximum age</label>
+                    <input type="number" class="form-control form-control-lg custom-input" name="maxAge"
+                        [(ngModel)]="memberService.userParams().maxAge" id="maxAge">
+                </div>
+                <div class="form-group me-3 mb-0">
+                    <label for="gender" class="sr-only">Gender</label>
+                    <select name="gender" id="gender" class="form-select ms-1" [(ngModel)]="memberService.userParams().gender">
+                        <option *ngFor="let item of genderList" [value]="item.value">{{item.display}}</option>
+                    </select>
+                </div>
+                <div class="form-group me-3 mb-0">
+                    <label for="knowAs" class="sr-only">Nickname</label>
+                    <input type="text" class="form-control form-control-lg custom-input" name="knowAs" [(ngModel)]="knowAs"
+                        id="knowAs" placeholder="Enter nickname">
+                </div>
+                <div class="mt-4 me-3">
+                    <button type="button" class="btn btn-primary btn-lg px-5 custom-button" (click)="searchByKnowAs()">
+                        <i class="bi bi-search"></i> <span style="padding-left: 10px;">Search by Nickname</span>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <button type="button" class="btn btn-success btn-lg px-5 custom-button2" (click)="resetFilter()">
+                        <i class="bi bi-arrow-counterclockwise"></i> <span style="padding-left: 10px;">Refresh</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <ng-container *ngIf="memberService.paginatedResult() && memberService.paginatedResult()!.items!.length > 0;">
+        <div *ngFor="let member of memberService.paginatedResult()?.items" 
+             class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6">
+          <app-member-card [member]="member"></app-member-card>
+        </div>
+      </ng-container>
+  
+  <div *ngIf="memberService.paginatedResult()?.pagination 
+              && memberService.paginatedResult()?.pagination!.totalItems > memberService.userParams().pageSize" 
+       class="d-flex justify-content-center mt-5">
+    <pagination 
+      [boundaryLinks]="true" 
+      [totalItems]="memberService.paginatedResult()?.pagination!.totalItems"
+      [itemsPerPage]="memberService.paginatedResult()?.pagination!.itemsPerPage" 
+      (pageChanged)="pageChanged($event)"
+      [(ngModel)]="memberService.paginatedResult()?.pagination!.currentPage"
+      [maxSize]="10" 
+      previousText="&lsaquo;" 
+      nextText="&rsaquo;" 
+      firstText="&laquo;" 
+      lastText="&raquo;">
+    </pagination>
+  </div>
+
+
+<!-- <div class="text-center mt-3">
+        <div class="fs-2">Kết quả tìm kiếm - {{memberService.paginatedResult()?.pagination?.totalItems}}</div>
+    </div> -->
+
+                <!-- <button 
             type="button" 
             class="btn btn-info"
             [ngClass]="{'active': memberService.userParams().orderBy === 'lastActive'}"
@@ -12,80 +94,3 @@
             >
             Latest Activity
             </button> -->
-
-            <button 
-            type="button" 
-            class="btn btn-info"
-            [ngClass]="{'active': memberService.userParams().orderBy === 'dateCreated'}"
-            (click)="loadMember()"
-            btnRadio="dateCreated"
-            [(ngModel)]="memberService.userParams().orderBy"
-            >
-            Recently joined
-            </button>
-        </div>
-        
-        <!-- Các ô input và nút tìm kiếm bên phải -->
-        <form #form="ngForm" (ngSubmit)="loadMember()">
-        <div class="d-flex align-items-center">
-                <div class="form-group me-3 mb-0">
-                    <label for="minAge" class="sr-only">Minimum age</label>
-                    <input type="number" class="form-control form-control-lg custom-input" name="minAge"
-                        [(ngModel)]="memberService.userParams().minAge" id="minAge">
-                </div>
-                <div class="form-group me-3 mb-0">
-                    <label for="maxAge" class="sr-only">Maximum</label>
-                    <input type="number" class="form-control form-control-lg custom-input" name="maxAge"
-                        [(ngModel)]="memberService.userParams().maxAge" id="maxAge">
-                </div>
-                <div class="form-group me-3 mb-0">
-                    <label for="minAge" class="sr-only">Gender</label>
-                    <select name="gender" id="gender" class="form-select ms-1" [(ngModel)]="memberService.userParams().gender">
-                        @for (item of genderList; track item.value) {
-                        <option [value]="item.value">{{item.display}}</option>
-                        }
-                    </select>
-                </div>
-                <div class="mt-4 me-3">
-                    <button type="submit" class="btn btn-primary btn-lg px-5 custom-button">
-                        <i class="bi bi-search"></i> <span style="padding-left: 10px;">Search</span>
-                    </button>
-                </div>
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-success btn-lg px-5 custom-button2" (click)="resetFilter()">
-                        <i class="bi bi-arrow-counterclockwise"></i> <span style="padding-left: 10px;">Refresh</span>
-                    </button>
-                </div>
-        </div>
-    </form>
-    </div>
-</div>
-
-
-
-<div class="row">
-    @for (member of memberService.paginatedResult()?.items; track member.id) {
-    <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6">
-        <app-member-card [member]="member"></app-member-card>
-    </div>
-    }
-</div>
-
-@if (memberService.paginatedResult()?.items 
-&& memberService.paginatedResult()?.pagination!.totalItems > memberService.userParams().pageSize) {
-
-<div class="d-flex justify-content-center mt-5">
-    <pagination [boundaryLinks]="true" [totalItems]="memberService.paginatedResult()?.pagination!.totalItems"
-        [itemsPerPage]="memberService.paginatedResult()?.pagination!.itemsPerPage" (pageChanged)="pageChanged($event)"
-        [(ngModel)]="memberService.paginatedResult()?.pagination!.currentPage"
-        [maxSize]="10" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
-    </pagination>
-</div>
-
-}
-
-
-
-<!-- <div class="text-center mt-3">
-        <div class="fs-2">Kết quả tìm kiếm - {{memberService.paginatedResult()?.pagination?.totalItems}}</div>
-    </div> -->

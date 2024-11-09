@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 import { MemberService } from '../member.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PostResponse } from '../../shared/models/user/post-response.model';
 import { CommonModule, TitleCasePipe } from '@angular/common';
@@ -13,6 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { AccountService } from '../../account/account.service';
 import { ImagePreviewModalComponent } from '../../shared/modals/image-preview-modal/image-preview-modal.component';
+import { PostRequest, PostVisibility } from '../../shared/models/user/post.model';
 
 @Component({
   selector: 'app-edit-post-member',
@@ -35,7 +35,9 @@ export class EditPostMemberComponent implements OnInit {
   @Input() post!: PostResponse;
   @Output() postUpdated = new EventEmitter<PostResponse>();
   updatedContent: string = '';
-  fileList: NzUploadFile[] = []; // To manage uploaded files
+  updatedStatus!: PostVisibility;
+  fileList: NzUploadFile[] = [];
+  PostVisibility = PostVisibility; 
 
   constructor(private bsModalRef: BsModalRef,
     public accountService: AccountService,
@@ -46,6 +48,7 @@ export class EditPostMemberComponent implements OnInit {
   ngOnInit(): void {
     if (this.post) {
       this.updatedContent = this.post.content;
+      this.updatedStatus = this.post.visibility; // Đặt giá trị mặc định cho visibility
 
       this.fileList = this.post.photos.map(photo => ({
         uid: photo.id.toString(),
@@ -56,14 +59,17 @@ export class EditPostMemberComponent implements OnInit {
     }
   }
 
-
   updatePost(): void {
     const postId = this.post.id;
-    const postRequest = { content: this.updatedContent };
+    const postRequest: PostRequest = {
+      content: this.updatedContent,
+      visibility: this.updatedStatus // Bao gồm visibility
+    };
 
     this.memberService.updatePost(postId, postRequest).subscribe({
       next: _ => {
         this.post.content = this.updatedContent;
+        this.post.visibility = this.updatedStatus; // Cập nhật visibility trong bài viết hiện tại
         this.postUpdated.emit(this.post);
         this.closeModal();
         this.toastr.success('Update successfully');
@@ -168,5 +174,5 @@ export class EditPostMemberComponent implements OnInit {
       console.error(`${info.file.name} file upload failed.`);
     }
   }
-  
+
 }

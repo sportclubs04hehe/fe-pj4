@@ -29,6 +29,7 @@ export class ListPostMemberComponent implements OnInit {
   private sharedService = inject(SharedService);
   bsModalRef?: BsModalRef;
   @Input() photoTab: any;
+  currentUserId!: any;
 
   listPostMember: PostResponse[] = []; // Always initialized to an empty array
   @Input() member!: Member | null;
@@ -40,6 +41,7 @@ export class ListPostMemberComponent implements OnInit {
   imagesByPost = new Map<number, GalleryItem[]>();
 
   ngOnInit(): void {
+    this.currentUserId = this.accountService.user$()!.id; // Get the current user's ID
     this.getPostByMember();
   }
 
@@ -47,6 +49,8 @@ export class ListPostMemberComponent implements OnInit {
     const memberId = this.member?.id || this.accountService.user$()!.id;
     this.memberService.getPostId(memberId).subscribe({
       next: (res: PostResponse[]) => {
+        console.log('bai viet co gi', res);
+        
         this.listPostMember = res || []; // Ensure it's an array
         this.isLoading = false; // Set loading to false once data is fetched
         if (this.listPostMember) {
